@@ -1,4 +1,4 @@
-##ALERT!!
+## ALERT!!
 
 The below readme is from the original sdk, this is the modified code we will be using for programming the SMTECH 11.0 robot.
 
