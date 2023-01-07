@@ -18,7 +18,8 @@ public class BasicAuto extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
 
-        robot.encoderDrive(5, DataHolder.MOVEDIR.FRONT, 12, 5);
+        robot.encoderDrive(1, DataHolder.MOVEDIR.FRONT, 22.75, 5);
+
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
