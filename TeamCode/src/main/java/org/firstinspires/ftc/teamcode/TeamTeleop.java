@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.util.RobotLog;
 
-@TeleOp(name = "TeamX-Teleop")
+@TeleOp(name = "Lunatech-TeleOp")
 public class TeamTeleop extends LinearOpMode {
 
   private TeamHardware robot;
@@ -19,6 +19,9 @@ public class TeamTeleop extends LinearOpMode {
     double leftX1;
     double leftY1;
     double rightX1;
+    double rightY1;
+    boolean dpadUp1;
+    boolean dpadDown1;
 
     double leftX2;
     double leftY2;
@@ -38,6 +41,9 @@ public class TeamTeleop extends LinearOpMode {
             leftX1 = -Range.clip(gamepad1.left_stick_x, -1, 1);
             leftY1 = Range.clip(gamepad1.left_stick_y, -1, 1);
             rightX1 = -Range.clip(gamepad1.right_stick_x, -1, 1);
+            rightY1 = Range.clip(gamepad1.right_stick_y, -1, 1);
+            dpadUp1 = gamepad1.dpad_up;
+            dpadDown1 = gamepad1.dpad_down;
 
             //Set motor power:
             robot.setMotors(leftX1, leftY1, rightX1);

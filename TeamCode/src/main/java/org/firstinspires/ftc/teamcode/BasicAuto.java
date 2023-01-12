@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="Auto", group="TeamX")
+@Autonomous(name="BasicAuto", group="Lunatech")
 public class BasicAuto extends LinearOpMode {
 
     private TeamHardware robot;

@@ -44,18 +44,22 @@ public class TeamHardware {
     /* Initialize standard Hardware interfaces */
     public void init_teleop() {
         motorLeftFront.setDirection(DcMotor.Direction.REVERSE);
+        motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLeftFront.setPower(0.0);
         motorLeftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         motorRightFront.setDirection(DcMotor.Direction.FORWARD);
+        motorRightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorRightFront.setPower(0.0);
         motorRightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         motorLeftBack.setDirection(DcMotor.Direction.REVERSE);
+        motorLeftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLeftBack.setPower(0.0);
         motorLeftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         motorRightBack.setDirection(DcMotor.Direction.FORWARD);
+        motorRightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorRightBack.setPower(0.0);
         motorRightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
