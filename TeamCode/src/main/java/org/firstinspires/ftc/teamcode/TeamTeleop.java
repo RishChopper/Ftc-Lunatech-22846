@@ -19,13 +19,9 @@ public class TeamTeleop extends LinearOpMode {
     double leftX1;
     double leftY1;
     double rightX1;
-    double rightY1;
-    boolean dpadUp1;
-    boolean dpadDown1;
-
-    double leftX2;
-    double leftY2;
-    double rightX2;
+    double triggers_value;
+    double rightTrigger;
+    double leftTrigger;
 
     robot = new TeamHardware(hardwareMap,telemetry);
 
@@ -41,12 +37,15 @@ public class TeamTeleop extends LinearOpMode {
             leftX1 = -Range.clip(gamepad1.left_stick_x, -1, 1);
             leftY1 = Range.clip(gamepad1.left_stick_y, -1, 1);
             rightX1 = -Range.clip(gamepad1.right_stick_x, -1, 1);
-            rightY1 = Range.clip(gamepad1.right_stick_y, -1, 1);
-            dpadUp1 = gamepad1.dpad_up;
-            dpadDown1 = gamepad1.dpad_down;
+            rightTrigger = Range.clip(gamepad1.right_trigger, -1, 1);
+            leftTrigger = -Range.clip(gamepad1.left_trigger, -1, 1);
+
+            triggers_value = rightTrigger + leftTrigger;
 
             //Set motor power:
             robot.setMotors(leftX1, leftY1, rightX1);
+
+            robot.LinearSlide(0, triggers_value);
 
             //telemetry is the screen with debug info in DS
             telemetry.addData("GAMEPAD1", "Front %f,  Right %f, Turn %f", leftY1, leftX1, rightX1);

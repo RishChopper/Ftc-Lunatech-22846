@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 
@@ -13,6 +15,8 @@ public class TeamHardware {
     private DcMotor motorRightFront;
     private DcMotor motorLeftBack;
     private DcMotor motorRightBack;
+    private DcMotor LinearSlide1;
+    private Servo Servo0;
     HardwareMap hardwareMap;
     Telemetry telemetry;
     private ElapsedTime runtime;
@@ -39,6 +43,8 @@ public class TeamHardware {
         motorRightFront = hardwareMap.get(DcMotor.class, "motorRightFront");
         motorLeftBack = hardwareMap.get(DcMotor.class, "motorLeftBack");
         motorRightBack = hardwareMap.get(DcMotor.class, "motorRightBack");
+        LinearSlide1 = hardwareMap.get(DcMotor.class, "LinearSlide1");
+        Servo0 = hardwareMap.get(Servo.class, "Servo0");
     }
 
     /* Initialize standard Hardware interfaces */
@@ -62,6 +68,14 @@ public class TeamHardware {
         motorRightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorRightBack.setPower(0.0);
         motorRightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        LinearSlide1.setDirection(DcMotor.Direction.FORWARD);
+        LinearSlide1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        LinearSlide1.setPower(0.0);
+        LinearSlide1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        Servo0.setDirection(Servo.Direction.FORWARD);
+        Servo0.setPosition(0);
     }
 
     public void init_auto(LinearOpMode opmode) {
@@ -90,12 +104,29 @@ public class TeamHardware {
         motorRightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        telemetry.addData("Starting at",  "%7d: %7d: %7d: %7d",
+        LinearSlide1.setDirection(DcMotor.Direction.FORWARD);
+        LinearSlide1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        LinearSlide1.setPower(0.0);
+        LinearSlide1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        Servo0.setDirection(Servo.Direction.FORWARD);
+        Servo0.setPosition(0);
+
+/*        telemetry.addData("Starting at",  "%7d: %7d: %7d: %7d",
                 motorLeftFront.getCurrentPosition(),
                 motorRightFront.getCurrentPosition(),
                 motorLeftBack.getCurrentPosition(),
                 motorRightBack.getCurrentPosition());
-        telemetry.update();
+        telemetry.update();*/
+    }
+
+    void LinearSlide(int id, double power){
+        switch(id){
+            case 0:
+                LinearSlide1.setPower(power);
+                break;
+            default:
+        }
     }
 
     void setMotors(double x, double y, double rot)  //sets the motor speeds given an x, y and rotation value
@@ -250,6 +281,17 @@ public class TeamHardware {
             RobotLog.ee("SMTECH", e, "exception in moveChassisToTarget()");
         }
     }
+
+    public void setServoPosition(String servo, double direction){
+        switch(servo){
+            case "Servo0":
+                Servo0.setPosition(direction);
+                break;
+
+            default:
+        }
+    }
+
     public void setChassisTargetPosition( DataHolder.MOVEDIR dir, double distance){
         int targetPos;
         targetPos = (int)(distance * COUNTS_PER_INCH);
