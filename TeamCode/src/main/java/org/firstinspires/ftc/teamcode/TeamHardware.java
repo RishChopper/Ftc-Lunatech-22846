@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -11,11 +12,11 @@ import com.qualcomm.robotcore.util.RobotLog;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class TeamHardware {
-    private DcMotor motorLeftFront;
-    private DcMotor motorRightFront;
-    private DcMotor motorLeftBack;
-    private DcMotor motorRightBack;
-    private DcMotor LinearSlide1;
+    private DcMotorEx motorLeftFront;
+    private DcMotorEx motorRightFront;
+    private DcMotorEx motorLeftBack;
+    private DcMotorEx motorRightBack;
+    private DcMotorEx LinearSlide1;
     private Servo Servo0;
     HardwareMap hardwareMap;
     Telemetry telemetry;
@@ -39,40 +40,40 @@ public class TeamHardware {
         hardwareMap = hwMap;
         telemetry = tmry;
         runtime = new ElapsedTime();
-        motorLeftFront = hardwareMap.get(DcMotor.class, "motorLeftFront");
-        motorRightFront = hardwareMap.get(DcMotor.class, "motorRightFront");
-        motorLeftBack = hardwareMap.get(DcMotor.class, "motorLeftBack");
-        motorRightBack = hardwareMap.get(DcMotor.class, "motorRightBack");
-        LinearSlide1 = hardwareMap.get(DcMotor.class, "LinearSlide1");
+        motorLeftFront = hardwareMap.get(DcMotorEx.class, "motorLeftFront");
+        motorRightFront = hardwareMap.get(DcMotorEx.class, "motorRightFront");
+        motorLeftBack = hardwareMap.get(DcMotorEx.class, "motorLeftBack");
+        motorRightBack = hardwareMap.get(DcMotorEx.class, "motorRightBack");
+        LinearSlide1 = hardwareMap.get(DcMotorEx.class, "LinearSlide1");
         Servo0 = hardwareMap.get(Servo.class, "Servo0");
     }
 
     /* Initialize standard Hardware interfaces */
     public void init_teleop() {
-        motorLeftFront.setDirection(DcMotor.Direction.REVERSE);
-        motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLeftFront.setDirection(DcMotorEx.Direction.REVERSE);
+        motorLeftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorLeftFront.setPower(0.0);
-        motorLeftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorLeftFront.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
-        motorRightFront.setDirection(DcMotor.Direction.FORWARD);
-        motorRightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRightFront.setDirection(DcMotorEx.Direction.FORWARD);
+        motorRightFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorRightFront.setPower(0.0);
-        motorRightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorRightFront.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
-        motorLeftBack.setDirection(DcMotor.Direction.REVERSE);
-        motorLeftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLeftBack.setDirection(DcMotorEx.Direction.REVERSE);
+        motorLeftBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorLeftBack.setPower(0.0);
-        motorLeftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorLeftBack.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
-        motorRightBack.setDirection(DcMotor.Direction.FORWARD);
-        motorRightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRightBack.setDirection(DcMotorEx.Direction.FORWARD);
+        motorRightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorRightBack.setPower(0.0);
-        motorRightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorRightBack.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
-        LinearSlide1.setDirection(DcMotor.Direction.FORWARD);
-        LinearSlide1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        LinearSlide1.setDirection(DcMotorEx.Direction.FORWARD);
+        LinearSlide1.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         LinearSlide1.setPower(0.0);
-        LinearSlide1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        LinearSlide1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         Servo0.setDirection(Servo.Direction.FORWARD);
         Servo0.setPosition(0);
@@ -80,34 +81,34 @@ public class TeamHardware {
 
     public void init_auto(LinearOpMode opmode) {
         myOpMode = opmode;
-        motorLeftFront.setDirection(DcMotor.Direction.REVERSE);
-        motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLeftFront.setDirection(DcMotorEx.Direction.REVERSE);
+        motorLeftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorLeftFront.setPower(0.0);
-        motorLeftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorLeftFront.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        motorLeftFront.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        motorRightFront.setDirection(DcMotor.Direction.FORWARD);
-        motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRightFront.setDirection(DcMotorEx.Direction.FORWARD);
+        motorLeftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorRightFront.setPower(0.0);
-        motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorRightFront.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        motorRightFront.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        motorLeftBack.setDirection(DcMotor.Direction.REVERSE);
-        motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLeftBack.setDirection(DcMotorEx.Direction.REVERSE);
+        motorLeftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorLeftBack.setPower(0.0);
-        motorLeftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLeftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorLeftBack.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        motorLeftBack.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        motorRightBack.setDirection(DcMotor.Direction.FORWARD);
-        motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRightBack.setDirection(DcMotorEx.Direction.FORWARD);
+        motorLeftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorRightBack.setPower(0.0);
-        motorRightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorRightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorRightBack.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        motorRightBack.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        LinearSlide1.setDirection(DcMotor.Direction.FORWARD);
-        LinearSlide1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        LinearSlide1.setDirection(DcMotorEx.Direction.FORWARD);
+        LinearSlide1.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         LinearSlide1.setPower(0.0);
-        LinearSlide1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        LinearSlide1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         Servo0.setDirection(Servo.Direction.FORWARD);
         Servo0.setPosition(0);
@@ -120,10 +121,14 @@ public class TeamHardware {
         telemetry.update();*/
     }
 
-    void LinearSlide(int id, double power){
+    void LinearSlide(int id, boolean power){
         switch(id){
             case 0:
-                LinearSlide1.setPower(power);
+                if(power = true) {
+                    LinearSlide1.setPower(1.0);
+                }else{
+                    LinearSlide1.setPower(0);
+                }
                 break;
             default:
         }
@@ -150,6 +155,11 @@ public class TeamHardware {
             telemetry.update();
             RobotLog.ee("SMTECH", e, "setMotors");
         }
+    }
+
+    public MotorData getMotorData(){
+        MotorData motorData = new MotorData(motorLeftFront, motorRightFront, motorLeftBack, motorRightBack);
+        return motorData;
     }
 
     public void encoderDrive(double speed, DataHolder.MOVEDIR dir, double distance,
@@ -229,10 +239,10 @@ public class TeamHardware {
     void beginChassisMotion(double speed){
         // Turn On RUN_TO_POSITION
         try {
-            motorLeftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorRightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorLeftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorRightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorLeftFront.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            motorRightFront.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            motorLeftBack.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            motorRightBack.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -375,10 +385,10 @@ public class TeamHardware {
             motorRightBack.setPower(0);
 
             // Turn off RUN_TO_POSITION
-            motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motorLeftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motorRightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motorLeftFront.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            motorRightFront.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            motorLeftBack.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            motorRightBack.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         }
         catch(Exception e){
             myOpMode.telemetry.addData("Exception stopChassis", e.toString());

@@ -11,6 +11,8 @@ public class TeamTeleop extends LinearOpMode {
 
   private TeamHardware robot;
 
+  private MotorData motorData;
+
   /**
    * This function is executed when this Op Mode is selected from the Driver Station.
    */
@@ -23,6 +25,15 @@ public class TeamTeleop extends LinearOpMode {
     double rightTrigger;
     double leftTrigger;
 
+    double leftFrontRPM;
+    double rightFrontRPM;
+    double leftBackRPM;
+    double rightBackRPM;
+    double linearSlide1RPM;
+    double linearSlide2RPM;
+
+    boolean a;
+
     robot = new TeamHardware(hardwareMap,telemetry);
 
     robot.init_teleop();
@@ -34,21 +45,34 @@ public class TeamTeleop extends LinearOpMode {
 
         if (!gamepad1.atRest()) { // Only checks wheels & trigger
           try {
+            motorData = robot.getMotorData();
+
             leftX1 = -Range.clip(gamepad1.left_stick_x, -1, 1);
             leftY1 = Range.clip(gamepad1.left_stick_y, -1, 1);
             rightX1 = -Range.clip(gamepad1.right_stick_x, -1, 1);
             rightTrigger = Range.clip(gamepad1.right_trigger, -1, 1);
             leftTrigger = -Range.clip(gamepad1.left_trigger, -1, 1);
+            a = gamepad1.a;
 
             triggers_value = rightTrigger + leftTrigger;
 
             //Set motor power:
             robot.setMotors(leftX1, leftY1, rightX1);
 
-            robot.LinearSlide(0, triggers_value);
+            robot.LinearSlide(0, a);
+
+            //Calculate RPM of Motors
+            leftBackRPM = motorData.getBackLeft().getVelocity();
+            //That returned in ticks per second
+            leftBackRPM = (leftBackRPM / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
+            //And now it's in RPM
+            rightBackRPM = (motorData.getBackRight().getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
+            leftFrontRPM = (motorData.getFrontLeft().getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
+            rightFrontRPM = (motorData.getFrontRight().getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
 
             //telemetry is the screen with debug info in DS
             telemetry.addData("GAMEPAD1", "Front %f,  Right %f, Turn %f", leftY1, leftX1, rightX1);
+            telemetry.addData("RPM", "LEFTFRONT %f, RIGHTRONT %f, LEFTBACK %f, RIGHTBACK %f", leftFrontRPM, rightFrontRPM, leftBackRPM, rightBackRPM);
             telemetry.update();
             }
 
