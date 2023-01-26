@@ -6,11 +6,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.util.RobotLog;
 
-@TeleOp(name = "Lunatech-TeleOp")
+@TeleOp(name = "Lunatech-TeleOp", group = "MainCode")
 public class TeamTeleop extends LinearOpMode {
 
   private TeamHardware robot;
-
   private MotorData motorData;
 
   /**
@@ -35,6 +34,7 @@ public class TeamTeleop extends LinearOpMode {
     boolean a;
 
     robot = new TeamHardware(hardwareMap,telemetry);
+    motorData = robot.getMotorData();
 
     robot.init_teleop();
 
@@ -45,7 +45,6 @@ public class TeamTeleop extends LinearOpMode {
 
         if (!gamepad1.atRest()) { // Only checks wheels & trigger
           try {
-            motorData = robot.getMotorData();
 
             leftX1 = -Range.clip(gamepad1.left_stick_x, -1, 1);
             leftY1 = Range.clip(gamepad1.left_stick_y, -1, 1);
@@ -79,7 +78,7 @@ public class TeamTeleop extends LinearOpMode {
           catch(Exception e){
             telemetry.addData("TELEOP 1:", "%s", e.toString());
             telemetry.update();
-            RobotLog.ee("SMTECH", e, "TELEOP 1");
+            RobotLog.ee("Lunatech", e, "TELEOP 1");
             }
           }
         else{

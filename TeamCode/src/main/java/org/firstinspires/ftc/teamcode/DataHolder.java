@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 public class DataHolder
 {
+    public static final double ONE_BLOCK = 23.50;
+
     /*
     public enum GAMEPADWHEEL
     {
