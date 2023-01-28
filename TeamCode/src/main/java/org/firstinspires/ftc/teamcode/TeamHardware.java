@@ -24,7 +24,7 @@ public class TeamHardware {
 
     private LinearOpMode myOpMode = null;
 
-    final double POWER_CHASSIS = 0.7;
+    final double POWER_CHASSIS = 1.0;
     private double r, robotAngle, v1, v2, v3, v4;
 
     static final double     COUNTS_PER_MOTOR_REV    = 537.6898396; //Gobilda 5202 Motor Encoder 19.2:1	((((1+(46/17))) * (1+(46/11))) * 28)

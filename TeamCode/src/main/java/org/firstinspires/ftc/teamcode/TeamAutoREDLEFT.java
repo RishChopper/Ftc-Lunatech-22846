@@ -23,7 +23,7 @@ public class TeamAutoREDLEFT extends LinearOpMode {
         //CODE HERE
 
             robot.encoderDrive(1.0, DataHolder.MOVEDIR.RIGHT, DataHolder.ONE_BLOCK, 5);
-            robot.encoderDrive(1.0, DataHolder.MOVEDIR.FRONT, 3*(DataHolder.ONE_BLOCK), 5);
+            robot.encoderDrive(1.0, DataHolder.MOVEDIR.FRONT, 2*(DataHolder.ONE_BLOCK), 5);
             robot.encoderTurn(1.0, DataHolder.MOVEDIR.ROTATE_LEFT, 90, 5);
             robot.encoderDrive(1.0, DataHolder.MOVEDIR.FRONT, 2*(DataHolder.ONE_BLOCK), 5);
             //PICK UP CONE
@@ -34,7 +34,7 @@ public class TeamAutoREDLEFT extends LinearOpMode {
             //RETURN TO SCAN AND PARK👇
             robot.encoderTurn(1.0, DataHolder.MOVEDIR.ROTATE_LEFT, 45, 5);
             robot.encoderDrive(1.0, DataHolder.MOVEDIR.FRONT, DataHolder.ONE_BLOCK, 5);
-            robot.encoderDrive(1.0, DataHolder.MOVEDIR.RIGHT, 3*(DataHolder.ONE_BLOCK), 5);
+            robot.encoderDrive(1.0, DataHolder.MOVEDIR.RIGHT, 2*(DataHolder.ONE_BLOCK), 5);
             robot.encoderTurn(1.0, DataHolder.MOVEDIR.ROTATE_LEFT, 90, 5);
             robot.encoderDrive(1.0, DataHolder.MOVEDIR.LEFT, DataHolder.ONE_BLOCK, 5);
             //READ SIGNAL SLEEVE
