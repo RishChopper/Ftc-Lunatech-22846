@@ -1,6 +1,9 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.teamcode.data.DataHolder;
+import org.firstinspires.ftc.teamcode.data.TeamHardware;
 
 @Autonomous(name="BasicAuto", group="Lunatech")
 public class BasicAuto extends LinearOpMode {

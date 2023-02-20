@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.data;
+
+import android.media.audiofx.DynamicsProcessing;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -17,6 +17,7 @@ public class TeamHardware {
     private DcMotorEx motorLeftBack;
     private DcMotorEx motorRightBack;
     private DcMotorEx LinearSlide1;
+    private DcMotorEx LinearSlide2;
     private Servo Servo0;
     HardwareMap hardwareMap;
     Telemetry telemetry;
@@ -27,7 +28,7 @@ public class TeamHardware {
     final double POWER_CHASSIS = 1.0;
     private double r, robotAngle, v1, v2, v3, v4;
 
-    static final double     COUNTS_PER_MOTOR_REV    = 537.6898396; //Gobilda 5202 Motor Encoder 19.2:1	((((1+(46/17))) * (1+(46/11))) * 28)
+    public static final double     COUNTS_PER_MOTOR_REV    = 537.6898396; //Gobilda 5202 Motor Encoder 19.2:1	((((1+(46/17))) * (1+(46/11))) * 28)
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 3.937 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
@@ -45,6 +46,7 @@ public class TeamHardware {
         motorLeftBack = hardwareMap.get(DcMotorEx.class, "motorLeftBack");
         motorRightBack = hardwareMap.get(DcMotorEx.class, "motorRightBack");
         LinearSlide1 = hardwareMap.get(DcMotorEx.class, "LinearSlide1");
+        LinearSlide2 = hardwareMap.get(DcMotorEx.class, "LinearSlide2");
         Servo0 = hardwareMap.get(Servo.class, "Servo0");
     }
 
@@ -74,6 +76,11 @@ public class TeamHardware {
         LinearSlide1.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         LinearSlide1.setPower(0.0);
         LinearSlide1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
+        LinearSlide2.setDirection(DcMotorEx.Direction.FORWARD);
+        LinearSlide2.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        LinearSlide2.setPower(0.0);
+        LinearSlide2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         Servo0.setDirection(Servo.Direction.FORWARD);
         Servo0.setPosition(0);
@@ -110,6 +117,11 @@ public class TeamHardware {
         LinearSlide1.setPower(0.0);
         LinearSlide1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
+        LinearSlide2.setDirection(DcMotorEx.Direction.FORWARD);
+        LinearSlide2.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        LinearSlide2.setPower(0.0);
+        LinearSlide2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
         Servo0.setDirection(Servo.Direction.FORWARD);
         Servo0.setPosition(0);
 
@@ -121,20 +133,19 @@ public class TeamHardware {
         telemetry.update();*/
     }
 
-    void LinearSlide(int id, boolean power){
+    public void LinearSlide(int id, double power){
         switch(id){
             case 0:
-                if(power = true) {
-                    LinearSlide1.setPower(1.0);
-                }else{
-                    LinearSlide1.setPower(0);
-                }
+                LinearSlide1.setPower(power);
+                break;
+            case 1:
+                LinearSlide2.setPower(power);
                 break;
             default:
         }
     }
 
-    void setMotors(double x, double y, double rot)  //sets the motor speeds given an x, y and rotation value
+    public void setMotors(double x, double y, double rot)  //sets the motor speeds given an x, y and rotation value
     {
         try {
             r = Math.hypot(x, y);
@@ -146,9 +157,9 @@ public class TeamHardware {
             v4 = r * Math.cos(robotAngle) - rot;
 
             motorLeftFront.setPower(v1 * POWER_CHASSIS);
-            motorRightFront.setPower(v2 * POWER_CHASSIS);
+            motorRightFront.setPower(v2 * POWER_CHASSIS * 0.93);
             motorLeftBack.setPower(v3 * POWER_CHASSIS);
-            motorRightBack.setPower(v4 * POWER_CHASSIS);
+            motorRightBack.setPower(v4 * POWER_CHASSIS * 0.557);
         }
         catch(Exception e){
             telemetry.addData("setMotors", "%s", e.toString());
@@ -247,9 +258,9 @@ public class TeamHardware {
             // reset the timeout time and start motion.
             runtime.reset();
             motorLeftFront.setPower(Math.abs(speed));
-            motorRightFront.setPower(Math.abs(speed));
+            motorRightFront.setPower(Math.abs(speed) * 0.93);
             motorLeftBack.setPower(Math.abs(speed));
-            motorRightBack.setPower(Math.abs(speed));
+            motorRightBack.setPower(Math.abs(speed) * 0.557);
         }
         catch (Exception e) {
             myOpMode.telemetry.addData("Exception beginChassisMotion", e.toString());
@@ -292,10 +303,10 @@ public class TeamHardware {
         }
     }
 
-    public void setServoPosition(String servo, double direction){
+    public void setServoPosition(String servo, double degrees){
         switch(servo){
             case "Servo0":
-                Servo0.setPosition(direction);
+                Servo0.setPosition(degrees);
                 break;
 
             default:
@@ -369,11 +380,15 @@ public class TeamHardware {
             RobotLog.ee("SMTECH", e, "exception in setChassisTargetPosition()");
         }
     }
-    void stopChassisMotors(){
+    public void stopChassisMotors(){
         motorLeftFront.setPower(0);
         motorRightFront.setPower(0);
         motorLeftBack.setPower(0);
         motorRightBack.setPower(0);
+
+        LinearSlide1.setPower(0);
+        LinearSlide2.setPower(0);
+        Servo0.setPosition(0);
     }
 
     void stopChassis() {
@@ -389,6 +404,10 @@ public class TeamHardware {
             motorRightFront.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
             motorLeftBack.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
             motorRightBack.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
+            LinearSlide1.setPower(0);
+            LinearSlide2.setPower(0);
+            Servo0.setPosition(0);
         }
         catch(Exception e){
             myOpMode.telemetry.addData("Exception stopChassis", e.toString());

@@ -19,7 +19,9 @@
  * SOFTWARE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autonomous;
+
+import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -33,7 +35,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @TeleOp
-public class cam_ex extends LinearOpMode
+public class SignalSleeveDetectorMain extends LinearOpMode
 {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -53,9 +55,10 @@ public class cam_ex extends LinearOpMode
     // UNITS ARE METERS
     double tagsize = 0.166;
 
-    int left = 4;
-    int middle =5;
-    int right = 6;
+    int left = 0;
+    int middle = 1;
+    int right = 2;
+    int detected_tag = 0;
 
     AprilTagDetection tagOfInterest = null;
 
@@ -98,6 +101,8 @@ public class cam_ex extends LinearOpMode
 
                 for(AprilTagDetection tag : currentDetections)
                 {
+                    Log.d("APRIL TAG DETECTED", "Tag ID: " + tag.id);
+
                     if(tag.id == left ||tag.id == middle||tag.id == right)
                     {
                         tagOfInterest = tag;
@@ -168,19 +173,22 @@ public class cam_ex extends LinearOpMode
         /* Actually do something useful */
         if (tagOfInterest == null || tagOfInterest.id == left) {
             // left tag detected on signal sleeve
-             telemetry.addLine("Left tag detected");
+            telemetry.addLine("Left tag detected");
 
-
-
+            detected_tag = 0;
         }
         else if(tagOfInterest.id== middle)
         {
             // middle tag detected
             telemetry.addLine("Middle tag detected");
+
+            detected_tag = 1;
         }
         else if (tagOfInterest.id == right){
             // right tag detected
-           telemetry.addLine("Right tag detected");
+            telemetry.addLine("Right tag detected");
+
+            detected_tag = 2;
         }
         /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
         while (opModeIsActive()) {sleep(20);}

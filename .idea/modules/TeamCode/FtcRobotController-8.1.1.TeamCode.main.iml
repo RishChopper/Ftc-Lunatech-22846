@@ -77,5 +77,8 @@
     <orderEntry type="library" name="Gradle: androidx.interpolator:interpolator:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.drawerlayout:drawerlayout:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: org.firstinspires.ftc:gameAssets-PowerPlay:1.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: org.openftc:easyopencv:1.5.3@aar" level="project" />
+    <orderEntry type="library" name="Gradle: org.openftc:opencv-repackaged-bundled-dylibs:4.5.3-C@aar" level="project" />
+    <orderEntry type="library" name="Gradle: org.openftc:apriltag:1.1.1@aar" level="project" />
   </component>
 </module>

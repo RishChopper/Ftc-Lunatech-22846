@@ -1,10 +1,12 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.util.RobotLog;
+
+import org.firstinspires.ftc.teamcode.data.MotorData;
+import org.firstinspires.ftc.teamcode.data.TeamHardware;
 
 @TeleOp(name = "Lunatech-TeleOp", group = "MainCode")
 public class TeamTeleop extends LinearOpMode {
@@ -20,9 +22,13 @@ public class TeamTeleop extends LinearOpMode {
     double leftX1;
     double leftY1;
     double rightX1;
+    double rightY1;
+
     double triggers_value;
     double rightTrigger;
     double leftTrigger;
+
+    boolean a, b, x, y;
 
     double leftFrontRPM;
     double rightFrontRPM;
@@ -30,8 +36,6 @@ public class TeamTeleop extends LinearOpMode {
     double rightBackRPM;
     double linearSlide1RPM;
     double linearSlide2RPM;
-
-    boolean a;
 
     robot = new TeamHardware(hardwareMap,telemetry);
     motorData = robot.getMotorData();
@@ -49,16 +53,30 @@ public class TeamTeleop extends LinearOpMode {
             leftX1 = -Range.clip(gamepad1.left_stick_x, -1, 1);
             leftY1 = Range.clip(gamepad1.left_stick_y, -1, 1);
             rightX1 = -Range.clip(gamepad1.right_stick_x, -1, 1);
+            rightY1 = Range.clip(gamepad1.right_stick_y, -1, 1);
+
+            a = gamepad1.a;
+            b = gamepad1.b;
+            x = gamepad1.x;
+            y = gamepad1.y;
+
             rightTrigger = Range.clip(gamepad1.right_trigger, -1, 1);
             leftTrigger = -Range.clip(gamepad1.left_trigger, -1, 1);
-            a = gamepad1.a;
-
             triggers_value = rightTrigger + leftTrigger;
 
             //Set motor power:
             robot.setMotors(leftX1, leftY1, rightX1);
 
-            robot.LinearSlide(0, a);
+            robot.LinearSlide(0, rightY1);
+            robot.LinearSlide(1, rightY1);
+
+            if (a && !b){
+              robot.setServoPosition("Servo0", 180);
+            } else if (b && !a) {
+              robot.setServoPosition("Servo0", 0);
+            } if (a && b){
+              robot.setServoPosition("Servo0", 0);
+            }
 
             //Calculate RPM of Motors
             leftBackRPM = motorData.getBackLeft().getVelocity();
@@ -69,8 +87,8 @@ public class TeamTeleop extends LinearOpMode {
             leftFrontRPM = (motorData.getFrontLeft().getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
             rightFrontRPM = (motorData.getFrontRight().getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
 
-            //telemetry is the screen with debug info in DS
-            telemetry.addData("GAMEPAD1", "Front %f,  Right %f, Turn %f", leftY1, leftX1, rightX1);
+            //telemetry is the screen with debug info in Driver Station
+            //telemetry.addData("GAMEPAD1", "Front %f,  Right %f, Turn %f", leftY1, leftX1, rightX1);
             telemetry.addData("RPM", "LEFTFRONT %f, RIGHTRONT %f, LEFTBACK %f, RIGHTBACK %f", leftFrontRPM, rightFrontRPM, leftBackRPM, rightBackRPM);
             telemetry.update();
             }
