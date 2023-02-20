@@ -168,7 +168,7 @@ public class cam_ex extends LinearOpMode
         /* Actually do something useful */
         if (tagOfInterest == null || tagOfInterest.id == left) {
             // left tag detected on signal sleeve
-             telemetry.addLine("Left tag detected")
+             telemetry.addLine("Left tag detected");
 
 
 
@@ -180,7 +180,7 @@ public class cam_ex extends LinearOpMode
         }
         else if (tagOfInterest.id == right){
             // right tag detected
-           telemetry.addLine("Right tag detected")
+           telemetry.addLine("Right tag detected");
         }
         /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
         while (opModeIsActive()) {sleep(20);}
