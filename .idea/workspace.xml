@@ -4,21 +4,17 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1221b94a-baa3-40c0-9e40-c3349514b368" name="Changes" comment="Converted to DcMotorEx and Set RPM Readout of motors in TeleOp&#10;Added Camera Basic Program with Vuforia Key">
-      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/SignalSleeveDetectorMain.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TeamAutoREDLEFT.java" afterDir="false" />
+    <list default="true" id="1221b94a-baa3-40c0-9e40-c3349514b368" name="Changes" comment="Object Detection">
+      <change afterPath="$PROJECT_DIR$/FtcRobotController/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FtcRobotController/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FtcRobotController/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/FtcRobotController/FtcRobotController-8.1.1.FtcRobotController.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/FtcRobotController/FtcRobotController-8.1.1.FtcRobotController.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/TeamCode/FtcRobotController-8.1.1.TeamCode.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/TeamCode/FtcRobotController-8.1.1.TeamCode.main.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/DataHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/DataHolder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TeamTeleop.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/TeamTeleop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,13 +27,6 @@
       <ProjectState />
     </projectState>
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
@@ -47,27 +36,30 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="KEEP" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.firstinspires.ftc/RobotCore/8.1.1/c578a8cca6ec2f680eb573ef7df740ea3838dfcd/RobotCore-8.1.1-sources.jar!/com/qualcomm/robotcore/hardware/DcMotor.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.firstinspires.ftc/RobotCore/8.1.1/c578a8cca6ec2f680eb573ef7df740ea3838dfcd/RobotCore-8.1.1-sources.jar!/com/qualcomm/robotcore/hardware/DcMotorSimple.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2IPovEZ7Vv1zgcLkvWGG3Z0pA0h" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <OptionsSetting value="false" id="Update" />
-  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/AndroidStudioProjects/FtcRobotController-8.1.1&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;
-  }
-}</component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
+    <property name="cidr.known.project.marker" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../FtcRobotController-master" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.17" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
+  </component>
   <component name="ReaderModeSettings">
     <option name="enabled" value="false" />
   </component>
@@ -80,8 +72,8 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="TeamCode" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
-      <module name="FtcRobotController-8.1.1.TeamCode.main" />
+    <configuration name="TeamCode" type="AndroidRunConfigurationType" factoryName="Android App">
+      <module name="SMTECH11.0.TeamCode.main" />
       <option name="DEPLOY" value="true" />
       <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
       <option name="DEPLOY_AS_INSTANT" value="false" />
@@ -129,6 +121,7 @@
         <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
         <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
         <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+        <option name="PROFILING_MODE" value="NOT_SET" />
       </Profilers>
       <option name="DEEP_LINK" value="" />
       <option name="ACTIVITY_CLASS" value="" />
@@ -197,35 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670662577398</updated>
     </task>
-    <task id="LOCAL-00008" summary="Robo moves 1 grid square basic auto">
-      <created>1673077356321</created>
+    <task id="LOCAL-00008" summary="Object Detection">
+      <created>1676874674617</created>
       <option name="number" value="00008" />
       <option name="presentableId" value="LOCAL-00008" />
       <option name="project" value="LOCAL" />
-      <updated>1673077356321</updated>
+      <updated>1676874674618</updated>
     </task>
-    <task id="LOCAL-00009" summary="Changes in teleop controls">
-      <created>1673545255264</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1673545255264</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Added Linear Slide Control to gamepad1. Added ServoTest.java . Updated TeamHardware.java">
-      <created>1673758178867</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1673758178867</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Converted to DcMotorEx and Set RPM Readout of motors in TeleOp&#10;Added Camera Basic Program with Vuforia Key">
-      <created>1674296779368</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1674296779368</updated>
-    </task>
-    <option name="localTasksCounter" value="12" />
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -258,10 +230,8 @@
     <MESSAGE value="Gradle Update" />
     <MESSAGE value="Random" />
     <MESSAGE value="Basic Autonomous Program + Calibrated" />
-    <MESSAGE value="Robo moves 1 grid square basic auto" />
-    <MESSAGE value="Changes in teleop controls" />
-    <MESSAGE value="Added Linear Slide Control to gamepad1. Added ServoTest.java . Updated TeamHardware.java" />
-    <MESSAGE value="Converted to DcMotorEx and Set RPM Readout of motors in TeleOp&#10;Added Camera Basic Program with Vuforia Key" />
-    <option name="LAST_COMMIT_MESSAGE" value="Converted to DcMotorEx and Set RPM Readout of motors in TeleOp&#10;Added Camera Basic Program with Vuforia Key" />
+    <MESSAGE value="Objec Detection" />
+    <MESSAGE value="Object Detection" />
+    <option name="LAST_COMMIT_MESSAGE" value="Object Detection" />
   </component>
 </project>
