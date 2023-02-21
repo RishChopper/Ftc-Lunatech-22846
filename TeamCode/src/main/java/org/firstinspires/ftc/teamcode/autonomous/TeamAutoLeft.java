@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.data.TeamHardware;
 public class TeamAutoLeft extends LinearOpMode {
     private TeamHardware robot;
     private MotorData motorData;
+    private SignalSleeveDetectorMain signalSleeveDetector;
 
     int signal_sleeve = 0;
 
@@ -19,46 +20,42 @@ public class TeamAutoLeft extends LinearOpMode {
     public void runOpMode() {
         robot = new TeamHardware(hardwareMap, telemetry);
         motorData = robot.getMotorData();
+        signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry);
         robot.init_auto(this);
 
         waitForStart();
 
         try {
-        //CODE HERE
+            signal_sleeve = signalSleeveDetector.getDetected_tag();
+            telemetry.addData("Signal Sleeve: ", "%s", String.valueOf((signal_sleeve)));
+            telemetry.update();
 
-            robot.encoderDrive(1.0, DataHolder.MOVEDIR.RIGHT, DataHolder.ONE_BLOCK, 5);
             robot.encoderDrive(1.0, DataHolder.MOVEDIR.FRONT, 2*(DataHolder.ONE_BLOCK), 5);
             robot.encoderTurn(1.0, DataHolder.MOVEDIR.ROTATE_LEFT, 90, 5);
-            robot.encoderDrive(1.0, DataHolder.MOVEDIR.FRONT, 2*(DataHolder.ONE_BLOCK), 5);
+            robot.encoderDrive(1.0, DataHolder.MOVEDIR.FRONT, DataHolder.ONE_BLOCK, 5);
             //PICK UP CONE
-            robot.encoderDrive(0.5, DataHolder.MOVEDIR.BACK, DataHolder.ONE_BLOCK, 5);
-            robot.encoderTurn(0.5, DataHolder.MOVEDIR.ROTATE_LEFT, 135, 5);
+            robot.encoderDrive(1.0, DataHolder.MOVEDIR.BACK, DataHolder.ONE_BLOCK, 5);
+            robot.encoderTurn(1.0, DataHolder.MOVEDIR.ROTATE_LEFT, 135, 5);
             //DROP CONE
             //REPEAT PROCESS AS LONG AS WE WANT
-            //RETURN TO SCAN AND PARK👇
-            robot.encoderTurn(1.0, DataHolder.MOVEDIR.ROTATE_LEFT, 45, 5);
-            robot.encoderDrive(1.0, DataHolder.MOVEDIR.FRONT, DataHolder.ONE_BLOCK, 5);
-            robot.encoderDrive(1.0, DataHolder.MOVEDIR.RIGHT, 2*(DataHolder.ONE_BLOCK), 5);
-            robot.encoderTurn(1.0, DataHolder.MOVEDIR.ROTATE_LEFT, 90, 5);
-            robot.encoderDrive(1.0, DataHolder.MOVEDIR.LEFT, DataHolder.ONE_BLOCK, 5);
-            //READ SIGNAL SLEEVE
-            //signal_sleeve = SignalSleeveDetectorMain.sleeveSignal();
-            //DECIDE WHERE TO GO IN var - int signal_sleeve
+            //RETURN TO PARK
+            robot.encoderTurn(1.0, DataHolder.MOVEDIR.ROTATE_RIGHT, 45, 5);
+            if(signal_sleeve != 2){
+                //PARK
+                //DECIDE WHERE TO GO IN var - int signal_sleeve
+                switch(signal_sleeve){
+                    case 1:
+                        //GO TO SPOT 1
+                        robot.encoderDrive(1.0, DataHolder.MOVEDIR.RIGHT, DataHolder.ONE_BLOCK, 5);
+                        break;
 
-            switch(signal_sleeve){
-                case 1:
-                    //GO TO SPOT 1
-                    break;
+                    case 3:
+                        //GO TO SPOT 3
+                        robot.encoderDrive(1.0, DataHolder.MOVEDIR.LEFT, DataHolder.ONE_BLOCK, 5);
+                        break;
 
-                case 2:
-                    //GO TO SPOT 2
-                    break;
-
-                case 3:
-                    //GO TO SPOT 3
-                    break;
-
-                default:
+                    default:
+                }
             }
             //AUTONOMOUS ENDS
 
