@@ -24,8 +24,12 @@ package org.firstinspires.ftc.teamcode.autonomous;
 import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -34,19 +38,18 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@TeleOp
-public class SignalSleeveDetectorMain extends LinearOpMode
+public class SignalSleeveDetectorMain
 {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
     static final double FEET_PER_METER = 3.28084;
 
+    HardwareMap hardwareMap;
+    Telemetry telemetry;
 
     // Lens intrinsics
     // UNITS ARE PIXELS
-    // NOTE: this calibration is for the C920 webcam at 800x448.
-    // You will need to do your own calibration for other configurations!
     double fx = 578.272;
     double fy = 578.272;
     double cx = 402.145;
@@ -55,15 +58,19 @@ public class SignalSleeveDetectorMain extends LinearOpMode
     // UNITS ARE METERS
     double tagsize = 0.166;
 
-    int left = 0;
-    int middle = 1;
-    int right = 2;
-    int detected_tag = 0;
+    int left = 4;
+    int middle = 5;
+    int right = 6;
+    int detected_tag = 1;
 
     AprilTagDetection tagOfInterest = null;
 
-    @Override
-    public void runOpMode()
+    public SignalSleeveDetectorMain (HardwareMap hwMap, Telemetry tmry) {
+        hardwareMap = hwMap;
+        telemetry = tmry;
+    }
+
+    public int getDetected_tag()
     {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
@@ -91,13 +98,14 @@ public class SignalSleeveDetectorMain extends LinearOpMode
          * The INIT-loop:
          * This REPLACES waitForStart!
          */
-        while (!isStarted() && !isStopRequested())
+        boolean tagFound = false;
+
+        while (!tagFound)
         {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
             if(currentDetections.size() != 0)
             {
-                boolean tagFound = false;
 
                 for(AprilTagDetection tag : currentDetections)
                 {
@@ -113,13 +121,13 @@ public class SignalSleeveDetectorMain extends LinearOpMode
 
                 if(tagFound)
                 {
-                    telemetry.addLine("Tag of interest is in sight!\n\nLocation data:");
+                    telemetry.addLine("A Tag is in sight!\n\nLocation data:");
                     tagToTelemetry(tagOfInterest);
                 }
                 else
                 {
                     telemetry.addLine("Don't see tag of interest :(");
-
+                    /*
                     if(tagOfInterest == null)
                     {
                         telemetry.addLine("(The tag has never been seen)");
@@ -128,7 +136,7 @@ public class SignalSleeveDetectorMain extends LinearOpMode
                     {
                         telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
                         tagToTelemetry(tagOfInterest);
-                    }
+                    }*/
                 }
 
             }
@@ -136,6 +144,7 @@ public class SignalSleeveDetectorMain extends LinearOpMode
             {
                 telemetry.addLine("Don't see tag of interest :(");
 
+                /*
                 if(tagOfInterest == null)
                 {
                     telemetry.addLine("(The tag has never been seen)");
@@ -144,12 +153,10 @@ public class SignalSleeveDetectorMain extends LinearOpMode
                 {
                     telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
                     tagToTelemetry(tagOfInterest);
-                }
-
+                }*/
             }
 
             telemetry.update();
-            sleep(20);
         }
 
         /*
@@ -166,7 +173,7 @@ public class SignalSleeveDetectorMain extends LinearOpMode
         }
         else
         {
-            telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
+            telemetry.addLine("No tag snapshot available, it was not in sight :(");
             telemetry.update();
         }
 
@@ -175,23 +182,23 @@ public class SignalSleeveDetectorMain extends LinearOpMode
             // left tag detected on signal sleeve
             telemetry.addLine("Left tag detected");
 
-            detected_tag = 0;
+            detected_tag = 1;
         }
         else if(tagOfInterest.id== middle)
         {
             // middle tag detected
             telemetry.addLine("Middle tag detected");
 
-            detected_tag = 1;
+            detected_tag = 2;
         }
         else if (tagOfInterest.id == right){
             // right tag detected
             telemetry.addLine("Right tag detected");
 
-            detected_tag = 2;
+            detected_tag = 3;
         }
-        /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
-        while (opModeIsActive()) {sleep(20);}
+
+        return detected_tag;
     }
 
     void tagToTelemetry(AprilTagDetection detection)

@@ -46,21 +46,20 @@ public class TeamAutoLeft extends LinearOpMode {
             //DECIDE WHERE TO GO IN var - int signal_sleeve
 
             switch(signal_sleeve){
-                case 0:
+                case 1:
                     //GO TO SPOT 1
                     break;
 
-                case 1:
+                case 2:
                     //GO TO SPOT 2
                     break;
 
-                case 2:
+                case 3:
                     //GO TO SPOT 3
                     break;
 
                 default:
             }
-            //PARKING DONE HERE👆
             //AUTONOMOUS ENDS
 
         }catch (Exception e){

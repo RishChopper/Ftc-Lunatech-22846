@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.util.RobotLog;
 
+import org.firstinspires.ftc.teamcode.autonomous.SignalSleeveDetectorMain;
 import org.firstinspires.ftc.teamcode.data.MotorData;
 import org.firstinspires.ftc.teamcode.data.TeamHardware;
 
@@ -13,6 +14,7 @@ public class TeamTeleop extends LinearOpMode {
 
   private TeamHardware robot;
   private MotorData motorData;
+  private SignalSleeveDetectorMain signalSleeveDetector;
 
   /**
    * This function is executed when this Op Mode is selected from the Driver Station.
@@ -38,6 +40,7 @@ public class TeamTeleop extends LinearOpMode {
     double linearSlide2RPM;
 
     robot = new TeamHardware(hardwareMap,telemetry);
+    signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry);
     motorData = robot.getMotorData();
 
     robot.init_teleop();
@@ -67,14 +70,14 @@ public class TeamTeleop extends LinearOpMode {
             //Set motor power:
             robot.setMotors(leftX1, leftY1, rightX1);
 
-            robot.LinearSlide(0, rightY1);
-            robot.LinearSlide(1, rightY1);
+            robot.LinearSlide(0, triggers_value);
+            robot.LinearSlide(1, triggers_value);
 
-            if (a && !b){
-              robot.setServoPosition("Servo0", 180);
-            } else if (b && !a) {
+            if (a && b){
               robot.setServoPosition("Servo0", 0);
-            } if (a && b){
+            }else if (a){
+              robot.setServoPosition("Servo0", 180);
+            } else if (b) {
               robot.setServoPosition("Servo0", 0);
             }
 

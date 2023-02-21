@@ -5,6 +5,7 @@ import android.media.audiofx.DynamicsProcessing;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.LightBlinker;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
@@ -26,13 +27,19 @@ public class TeamHardware {
     private LinearOpMode myOpMode = null;
 
     final double POWER_CHASSIS = 1.0;
+    final double POWER_DRIVE_MOTORS = 0.5;
+    final double POWER_MOTOR_LEFT_FRONT = 1.0;
+    final double POWER_MOTOR_LEFT_BACK = 1.0;
+    final double POWER_MOTOR_RIGHT_FRONT = 1.0;
+    final double POWER_MOTOR_RIGHT_BACK = 1.0;
+    final double POWER_LINEAR_SLIDE_1 = 1.0;
+    final double POWER_LINEAR_SLIDE_2 = 1.0;
     private double r, robotAngle, v1, v2, v3, v4;
 
-    public static final double     COUNTS_PER_MOTOR_REV    = 537.6898396; //Gobilda 5202 Motor Encoder 19.2:1	((((1+(46/17))) * (1+(46/11))) * 28)
+    public static final double COUNTS_PER_MOTOR_REV = 537.6898396; //Gobilda 5202 Motor Encoder 19.2:1	((((1+(46/17))) * (1+(46/11))) * 28)
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 3.937 ;     // For figuring circumference
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.14158);
+    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.14158);
     static final double     MAX_DRIVE_SPEED         = 0.4;
     static final double     COUNTS_PER_DEGREE       = 22* (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.14158* 90);
 
@@ -136,10 +143,10 @@ public class TeamHardware {
     public void LinearSlide(int id, double power){
         switch(id){
             case 0:
-                LinearSlide1.setPower(power);
+                LinearSlide1.setPower(power * POWER_LINEAR_SLIDE_1 * POWER_CHASSIS);
                 break;
             case 1:
-                LinearSlide2.setPower(power);
+                LinearSlide2.setPower(power * POWER_LINEAR_SLIDE_2 * POWER_CHASSIS);
                 break;
             default:
         }
@@ -156,10 +163,10 @@ public class TeamHardware {
             v3 = r * Math.sin(robotAngle) + rot;
             v4 = r * Math.cos(robotAngle) - rot;
 
-            motorLeftFront.setPower(v1 * POWER_CHASSIS);
-            motorRightFront.setPower(v2 * POWER_CHASSIS * 0.93);
-            motorLeftBack.setPower(v3 * POWER_CHASSIS);
-            motorRightBack.setPower(v4 * POWER_CHASSIS * 0.557);
+            motorLeftFront.setPower(v1 * POWER_CHASSIS * POWER_DRIVE_MOTORS * POWER_MOTOR_LEFT_FRONT);
+            motorRightFront.setPower(v2 * POWER_CHASSIS * POWER_DRIVE_MOTORS * POWER_MOTOR_RIGHT_FRONT);
+            motorLeftBack.setPower(v3 * POWER_CHASSIS * POWER_DRIVE_MOTORS * POWER_MOTOR_LEFT_BACK);
+            motorRightBack.setPower(v4 * POWER_CHASSIS * POWER_DRIVE_MOTORS * POWER_MOTOR_RIGHT_BACK);
         }
         catch(Exception e){
             telemetry.addData("setMotors", "%s", e.toString());
@@ -257,10 +264,10 @@ public class TeamHardware {
 
             // reset the timeout time and start motion.
             runtime.reset();
-            motorLeftFront.setPower(Math.abs(speed));
-            motorRightFront.setPower(Math.abs(speed) * 0.93);
-            motorLeftBack.setPower(Math.abs(speed));
-            motorRightBack.setPower(Math.abs(speed) * 0.557);
+            motorLeftFront.setPower(Math.abs(speed) * POWER_MOTOR_LEFT_FRONT);
+            motorRightFront.setPower(Math.abs(speed) * POWER_MOTOR_RIGHT_FRONT);
+            motorLeftBack.setPower(Math.abs(speed) * POWER_MOTOR_LEFT_BACK);
+            motorRightBack.setPower(Math.abs(speed) * POWER_MOTOR_RIGHT_BACK);
         }
         catch (Exception e) {
             myOpMode.telemetry.addData("Exception beginChassisMotion", e.toString());
