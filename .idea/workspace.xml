@@ -9,10 +9,14 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1221b94a-baa3-40c0-9e40-c3349514b368" name="Changes" comment="Converted SignalSleeveDetectorMain.java to a usable class from opmode and added power multipliers for motors in TeamHardware.java">
+    <list default="true" id="1221b94a-baa3-40c0-9e40-c3349514b368" name="Changes" comment="Autonomous edit 21/02/2023">
+      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/autonomous/motor_test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/autonomous/TeamAutoLeft.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/autonomous/TeamAutoLeft.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/autonomous/TeamAutoRight.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/autonomous/TeamAutoRight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/autonomous/ServoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/autonomous/ServoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/data/DataHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/data/DataHolder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/data/TeamHardware.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/data/TeamHardware.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/teleop/TeamTeleop.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/teleop/TeamTeleop.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -261,12 +265,24 @@
       <option name="project" value="LOCAL" />
       <updated>1676988731151</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Autonomous edit 21/02/2023">
+      <created>1677001966556</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1677001966556</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
+        <entry key="60ae5a2d-346e-4241-8aa6-70159f7fdf9f">
+          <value>
+            <State />
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State>
@@ -286,6 +302,11 @@
         </entry>
       </map>
     </option>
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="60ae5a2d-346e-4241-8aa6-70159f7fdf9f" value="TOOL_WINDOW" />
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial Commit" />
@@ -303,6 +324,7 @@
     <MESSAGE value="Major Directory Changes, Modified SignalSleeveDetectorMain.java&#10;Implemented April Tag Detection, TESTING PENDING" />
     <MESSAGE value="Gradle Upgrade" />
     <MESSAGE value="Converted SignalSleeveDetectorMain.java to a usable class from opmode and added power multipliers for motors in TeamHardware.java" />
-    <option name="LAST_COMMIT_MESSAGE" value="Converted SignalSleeveDetectorMain.java to a usable class from opmode and added power multipliers for motors in TeamHardware.java" />
+    <MESSAGE value="Autonomous edit 21/02/2023" />
+    <option name="LAST_COMMIT_MESSAGE" value="Autonomous edit 21/02/2023" />
   </component>
 </project>

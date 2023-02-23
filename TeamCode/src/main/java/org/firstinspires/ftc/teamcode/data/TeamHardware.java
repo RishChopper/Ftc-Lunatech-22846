@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.data;
 import android.media.audiofx.DynamicsProcessing;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.LightBlinker;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -19,6 +21,7 @@ public class TeamHardware {
     private DcMotorEx motorRightBack;
     private DcMotorEx LinearSlide1;
     private DcMotorEx LinearSlide2;
+    private DcMotorEx motor;
     private Servo Servo0;
     HardwareMap hardwareMap;
     Telemetry telemetry;
@@ -27,7 +30,7 @@ public class TeamHardware {
     private LinearOpMode myOpMode = null;
 
     final double POWER_CHASSIS = 1.0;
-    final double POWER_DRIVE_MOTORS = 0.5;
+    final double POWER_DRIVE_MOTORS = 1.0;
     final double POWER_MOTOR_LEFT_FRONT = 1.0;
     final double POWER_MOTOR_LEFT_BACK = 1.0;
     final double POWER_MOTOR_RIGHT_FRONT = 1.0;
@@ -48,6 +51,14 @@ public class TeamHardware {
         hardwareMap = hwMap;
         telemetry = tmry;
         runtime = new ElapsedTime();
+        Servo0 = hardwareMap.get(Servo.class, "Servo0");
+        motor = hardwareMap.get(DcMotorEx.class, "motor");
+    }
+
+    /*public TeamHardware (HardwareMap hwMap, Telemetry tmry){
+        hardwareMap = hwMap;
+        telemetry = tmry;
+        runtime = new ElapsedTime();
         motorLeftFront = hardwareMap.get(DcMotorEx.class, "motorLeftFront");
         motorRightFront = hardwareMap.get(DcMotorEx.class, "motorRightFront");
         motorLeftBack = hardwareMap.get(DcMotorEx.class, "motorLeftBack");
@@ -55,7 +66,7 @@ public class TeamHardware {
         LinearSlide1 = hardwareMap.get(DcMotorEx.class, "LinearSlide1");
         LinearSlide2 = hardwareMap.get(DcMotorEx.class, "LinearSlide2");
         Servo0 = hardwareMap.get(Servo.class, "Servo0");
-    }
+    }*/
 
     /* Initialize standard Hardware interfaces */
     public void init_teleop() {
@@ -89,8 +100,18 @@ public class TeamHardware {
         LinearSlide2.setPower(0.0);
         LinearSlide2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        Servo0.setDirection(Servo.Direction.FORWARD);
         Servo0.setPosition(0);
+    }
+
+    public void init_Servo0(){
+        Servo0.setPosition(0);
+    }
+    public void init_motor(){
+        motor.setDirection(DcMotorEx.Direction.REVERSE);
+        motor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        motor.setPower(0.0);
+        motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
     }
 
     public void init_auto(LinearOpMode opmode) {
@@ -129,7 +150,6 @@ public class TeamHardware {
         LinearSlide2.setPower(0.0);
         LinearSlide2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        Servo0.setDirection(Servo.Direction.FORWARD);
         Servo0.setPosition(0);
 
 /*        telemetry.addData("Starting at",  "%7d: %7d: %7d: %7d",
@@ -175,6 +195,12 @@ public class TeamHardware {
         }
     }
 
+    public void setMotor(double power){
+        motor.setPower(power);
+        telemetry.addData("RPM: ", (motor.getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60);
+        telemetry.update();
+    }
+
     public MotorData getMotorData(){
         MotorData motorData = new MotorData(motorLeftFront, motorRightFront, motorLeftBack, motorRightBack);
         return motorData;
@@ -209,6 +235,7 @@ public class TeamHardware {
 
 
                 setChassisTurnTargetPosition(dir, degrees);
+
                 beginChassisMotion(speed);
                 moveChassisToTarget(dir, timeoutS);
                 stopChassisMotors();
@@ -264,10 +291,10 @@ public class TeamHardware {
 
             // reset the timeout time and start motion.
             runtime.reset();
-            motorLeftFront.setPower(Math.abs(speed) * POWER_MOTOR_LEFT_FRONT);
-            motorRightFront.setPower(Math.abs(speed) * POWER_MOTOR_RIGHT_FRONT);
-            motorLeftBack.setPower(Math.abs(speed) * POWER_MOTOR_LEFT_BACK);
-            motorRightBack.setPower(Math.abs(speed) * POWER_MOTOR_RIGHT_BACK);
+            motorLeftFront.setPower(Math.abs(speed) * POWER_MOTOR_LEFT_FRONT * POWER_CHASSIS * POWER_DRIVE_MOTORS);
+            motorRightFront.setPower(Math.abs(speed) * POWER_MOTOR_RIGHT_FRONT * POWER_CHASSIS * POWER_DRIVE_MOTORS);
+            motorLeftBack.setPower(Math.abs(speed) * POWER_MOTOR_LEFT_BACK * POWER_CHASSIS * POWER_DRIVE_MOTORS);
+            motorRightBack.setPower(Math.abs(speed) * POWER_MOTOR_RIGHT_BACK * POWER_CHASSIS * POWER_DRIVE_MOTORS);
         }
         catch (Exception e) {
             myOpMode.telemetry.addData("Exception beginChassisMotion", e.toString());
@@ -309,6 +336,10 @@ public class TeamHardware {
             RobotLog.ee("SMTECH", e, "exception in moveChassisToTarget()");
         }
     }
+
+    /*public void setServo0Power(double power){
+        Servo0.setPower(power);
+    }*/
 
     public void setServoPosition(String servo, double degrees){
         switch(servo){

@@ -73,13 +73,13 @@ public class TeamTeleop extends LinearOpMode {
             robot.LinearSlide(0, triggers_value);
             robot.LinearSlide(1, triggers_value);
 
-            if (a && b){
+            /*if (a && b){
               robot.setServoPosition("Servo0", 0);
             }else if (a){
               robot.setServoPosition("Servo0", 180);
             } else if (b) {
               robot.setServoPosition("Servo0", 0);
-            }
+            }*/
 
             //Calculate RPM of Motors
             leftBackRPM = motorData.getBackLeft().getVelocity();
