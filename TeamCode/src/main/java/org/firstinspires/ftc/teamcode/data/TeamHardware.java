@@ -21,8 +21,6 @@ public class TeamHardware {
     private DcMotorEx motorRightBack;
     private DcMotorEx LinearSlide1;
     private DcMotorEx LinearSlide2;
-    private DcMotorEx motor;
-    private Servo Servo0;
     HardwareMap hardwareMap;
     Telemetry telemetry;
     private ElapsedTime runtime;
@@ -46,16 +44,7 @@ public class TeamHardware {
     static final double     MAX_DRIVE_SPEED         = 0.4;
     static final double     COUNTS_PER_DEGREE       = 22* (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.14158* 90);
 
-
-    public TeamHardware (HardwareMap hwMap, Telemetry tmry) {
-        hardwareMap = hwMap;
-        telemetry = tmry;
-        runtime = new ElapsedTime();
-        Servo0 = hardwareMap.get(Servo.class, "Servo0");
-        motor = hardwareMap.get(DcMotorEx.class, "motor");
-    }
-
-    /*public TeamHardware (HardwareMap hwMap, Telemetry tmry){
+    public TeamHardware (HardwareMap hwMap, Telemetry tmry){
         hardwareMap = hwMap;
         telemetry = tmry;
         runtime = new ElapsedTime();
@@ -65,8 +54,7 @@ public class TeamHardware {
         motorRightBack = hardwareMap.get(DcMotorEx.class, "motorRightBack");
         LinearSlide1 = hardwareMap.get(DcMotorEx.class, "LinearSlide1");
         LinearSlide2 = hardwareMap.get(DcMotorEx.class, "LinearSlide2");
-        Servo0 = hardwareMap.get(Servo.class, "Servo0");
-    }*/
+    }
 
     /* Initialize standard Hardware interfaces */
     public void init_teleop() {
@@ -99,19 +87,6 @@ public class TeamHardware {
         LinearSlide2.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         LinearSlide2.setPower(0.0);
         LinearSlide2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-
-        Servo0.setPosition(0);
-    }
-
-    public void init_Servo0(){
-        Servo0.setPosition(0);
-    }
-    public void init_motor(){
-        motor.setDirection(DcMotorEx.Direction.REVERSE);
-        motor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        motor.setPower(0.0);
-        motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
     }
 
     public void init_auto(LinearOpMode opmode) {
@@ -149,8 +124,6 @@ public class TeamHardware {
         LinearSlide2.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         LinearSlide2.setPower(0.0);
         LinearSlide2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-
-        Servo0.setPosition(0);
 
 /*        telemetry.addData("Starting at",  "%7d: %7d: %7d: %7d",
                 motorLeftFront.getCurrentPosition(),
@@ -193,12 +166,6 @@ public class TeamHardware {
             telemetry.update();
             RobotLog.ee("SMTECH", e, "setMotors");
         }
-    }
-
-    public void setMotor(double power){
-        motor.setPower(power);
-        telemetry.addData("RPM: ", (motor.getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60);
-        telemetry.update();
     }
 
     public MotorData getMotorData(){
@@ -340,7 +307,7 @@ public class TeamHardware {
     /*public void setServo0Power(double power){
         Servo0.setPower(power);
     }*/
-
+/*
     public void setServoPosition(String servo, double degrees){
         switch(servo){
             case "Servo0":
@@ -350,6 +317,7 @@ public class TeamHardware {
             default:
         }
     }
+ */
 
     public void setChassisTargetPosition( DataHolder.MOVEDIR dir, double distance){
         int targetPos;
@@ -426,7 +394,6 @@ public class TeamHardware {
 
         LinearSlide1.setPower(0);
         LinearSlide2.setPower(0);
-        Servo0.setPosition(0);
     }
 
     void stopChassis() {
@@ -445,7 +412,6 @@ public class TeamHardware {
 
             LinearSlide1.setPower(0);
             LinearSlide2.setPower(0);
-            Servo0.setPosition(0);
         }
         catch(Exception e){
             myOpMode.telemetry.addData("Exception stopChassis", e.toString());

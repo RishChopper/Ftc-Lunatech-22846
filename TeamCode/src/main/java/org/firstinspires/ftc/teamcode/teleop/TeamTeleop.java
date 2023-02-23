@@ -105,7 +105,6 @@ public class TeamTeleop extends LinearOpMode {
         else{
           robot.stopChassisMotors();
         }
-
         idle();
       }
     }

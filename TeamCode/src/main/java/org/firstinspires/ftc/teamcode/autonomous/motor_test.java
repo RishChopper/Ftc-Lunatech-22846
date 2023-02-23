@@ -1,30 +1,35 @@
+//Before use set config to 'test'
+
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.data.TeamHardware;
 
-@TeleOp(name = "Lunatech-motortest", group = "MainCode")
+@Autonomous(name = "Lunatech-motortest", group = "Testers")
 public class motor_test extends LinearOpMode {
 
-    private TeamHardware robot;
+    private DcMotorEx motor;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        robot = new TeamHardware(hardwareMap,telemetry);
-        robot.init_motor();
+        motor = hardwareMap.get(DcMotorEx.class, "motor");
+
+        motor.setDirection(DcMotorEx.Direction.FORWARD);
+        motor.setPower(0.0);
+        motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         if(opModeIsActive()){
             while (opModeIsActive()){
-                robot.setMotor(1.0);
+                motor.setPower(1.0);
+                telemetry.addData("RPM: ", (motor.getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60);
+                telemetry.update();
             }
         }
-
-        telemetry.addData("Motor Test", "Complete");
-        telemetry.update();
     }
 }

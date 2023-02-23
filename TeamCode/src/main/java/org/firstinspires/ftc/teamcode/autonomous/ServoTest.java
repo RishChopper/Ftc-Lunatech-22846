@@ -1,3 +1,5 @@
+//Before use set config to 'test'
+
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -6,15 +8,14 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.data.TeamHardware;
 
-@Autonomous(name="ServoTestAuto", group="Lunatech")
+@Autonomous(name="Lunatech-ServoTest", group="Testers")
 public class ServoTest extends LinearOpMode {
 
-    private TeamHardware robot;
+    private Servo servo;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        robot = new TeamHardware(hardwareMap,telemetry);
-        robot.init_Servo0();
+
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -22,13 +23,9 @@ public class ServoTest extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
 
-        robot.setServoPosition("Servo0", 190);
-        sleep(2000);
-        robot.setServoPosition("Servo0", 0);
-        sleep(2000);
-        robot.setServoPosition("Servo0", 190);
-
-        telemetry.addData("Servo Test", "Complete");
+        telemetry.addData("Servo Test: ", "Empty Program");
         telemetry.update();
+
+        sleep(5000);
     }
 }
