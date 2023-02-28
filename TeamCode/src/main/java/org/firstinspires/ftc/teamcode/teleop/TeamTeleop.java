@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.util.RobotLog;
 
@@ -53,8 +55,8 @@ public class TeamTeleop extends LinearOpMode {
         if (!gamepad1.atRest()) { // Only checks wheels & trigger
           try {
 
-            leftX1 = -Range.clip(gamepad1.left_stick_x, -1, 1);
-            leftY1 = Range.clip(gamepad1.left_stick_y, -1, 1);
+            leftX1 = Range.clip(gamepad1.left_stick_x, -1, 1);
+            leftY1 = -Range.clip(gamepad1.left_stick_y, -1, 1);
             rightX1 = -Range.clip(gamepad1.right_stick_x, -1, 1);
             rightY1 = Range.clip(gamepad1.right_stick_y, -1, 1);
 
@@ -68,10 +70,11 @@ public class TeamTeleop extends LinearOpMode {
             triggers_value = rightTrigger + leftTrigger;
 
             //Set motor power:
-            robot.setMotors(leftX1, leftY1, rightX1);
+            //robot.setMotors(leftY1, leftX1, rightX1);
+            robot.moveMotors("FORWARD", leftY1);
+            robot.moveMotors("RIGHT", leftX1);
 
-            robot.LinearSlide(0, triggers_value);
-            robot.LinearSlide(1, triggers_value);
+            robot.moveLinearSlides(triggers_value);
 
             /*if (a && b){
               robot.setServoPosition("Servo0", 0);

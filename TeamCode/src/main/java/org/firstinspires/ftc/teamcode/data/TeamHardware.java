@@ -28,7 +28,7 @@ public class TeamHardware {
     private LinearOpMode myOpMode = null;
 
     final double POWER_CHASSIS = 1.0;
-    final double POWER_DRIVE_MOTORS = 1.0;
+    final double POWER_DRIVE_MOTORS = 0.7;
     final double POWER_MOTOR_LEFT_FRONT = 1.0;
     final double POWER_MOTOR_LEFT_BACK = 1.0;
     final double POWER_MOTOR_RIGHT_FRONT = 1.0;
@@ -83,7 +83,7 @@ public class TeamHardware {
         LinearSlide1.setPower(0.0);
         LinearSlide1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        LinearSlide2.setDirection(DcMotorEx.Direction.FORWARD);
+        LinearSlide2.setDirection(DcMotorEx.Direction.REVERSE);
         LinearSlide2.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         LinearSlide2.setPower(0.0);
         LinearSlide2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -120,7 +120,7 @@ public class TeamHardware {
         LinearSlide1.setPower(0.0);
         LinearSlide1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        LinearSlide2.setDirection(DcMotorEx.Direction.FORWARD);
+        LinearSlide2.setDirection(DcMotorEx.Direction.REVERSE);
         LinearSlide2.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         LinearSlide2.setPower(0.0);
         LinearSlide2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -133,16 +133,9 @@ public class TeamHardware {
         telemetry.update();*/
     }
 
-    public void LinearSlide(int id, double power){
-        switch(id){
-            case 0:
-                LinearSlide1.setPower(power * POWER_LINEAR_SLIDE_1 * POWER_CHASSIS);
-                break;
-            case 1:
-                LinearSlide2.setPower(power * POWER_LINEAR_SLIDE_2 * POWER_CHASSIS);
-                break;
-            default:
-        }
+    public void moveLinearSlides(double power){
+        LinearSlide1.setPower(power);
+        LinearSlide2.setPower(power);
     }
 
     public void setMotors(double x, double y, double rot)  //sets the motor speeds given an x, y and rotation value
@@ -165,6 +158,39 @@ public class TeamHardware {
             telemetry.addData("setMotors", "%s", e.toString());
             telemetry.update();
             RobotLog.ee("SMTECH", e, "setMotors");
+        }
+    }
+
+    public void moveMotors(String direction, double power){
+        switch (direction){
+            case "FORWARD":
+                motorLeftFront.setPower(power);
+                motorLeftBack.setPower(power);
+                motorRightFront.setPower(power);
+                motorRightBack.setPower(power);
+                break;
+
+            case "BACKWARD":
+                motorLeftFront.setPower(-power);
+                motorLeftBack.setPower(-power);
+                motorRightFront.setPower(-power);
+                motorRightBack.setPower(-power);
+                break;
+
+            case "LEFT":
+                motorLeftFront.setPower(power);
+                motorLeftBack.setPower(-power);
+                motorRightFront.setPower(-power);
+                motorRightBack.setPower(power);
+                break;
+
+            case "RIGHT":
+                motorLeftFront.setPower(-power);
+                motorLeftBack.setPower(power);
+                motorRightFront.setPower(power);
+                motorRightBack.setPower(-power);
+                break;
+            default:
         }
     }
 
