@@ -28,13 +28,11 @@ public class TeamHardware {
     private LinearOpMode myOpMode = null;
 
     final double POWER_CHASSIS = 1.0;
-    final double POWER_DRIVE_MOTORS = 0.7;
+    final double POWER_DRIVE_MOTORS = 0.85;
     final double POWER_MOTOR_LEFT_FRONT = 1.0;
     final double POWER_MOTOR_LEFT_BACK = 1.0;
     final double POWER_MOTOR_RIGHT_FRONT = 1.0;
     final double POWER_MOTOR_RIGHT_BACK = 1.0;
-    final double POWER_LINEAR_SLIDE_1 = 1.0;
-    final double POWER_LINEAR_SLIDE_2 = 1.0;
     private double r, robotAngle, v1, v2, v3, v4;
 
     public static final double COUNTS_PER_MOTOR_REV = 537.6898396; //Gobilda 5202 Motor Encoder 19.2:1	((((1+(46/17))) * (1+(46/11))) * 28)
@@ -134,8 +132,8 @@ public class TeamHardware {
     }
 
     public void moveLinearSlides(double power){
-        LinearSlide1.setPower(power);
-        LinearSlide2.setPower(power);
+        LinearSlide1.setPower(power * POWER_CHASSIS);
+        LinearSlide2.setPower(power * POWER_CHASSIS);
     }
 
     public void setMotors(double x, double y, double rot)  //sets the motor speeds given an x, y and rotation value
@@ -190,12 +188,11 @@ public class TeamHardware {
                 motorRightFront.setPower(power);
                 motorRightBack.setPower(-power);
                 break;
-            default:
         }
     }
 
     public MotorData getMotorData(){
-        MotorData motorData = new MotorData(motorLeftFront, motorRightFront, motorLeftBack, motorRightBack);
+        MotorData motorData = new MotorData(motorLeftFront, motorRightFront, motorLeftBack, motorRightBack, LinearSlide1, LinearSlide2);
         return motorData;
     }
 

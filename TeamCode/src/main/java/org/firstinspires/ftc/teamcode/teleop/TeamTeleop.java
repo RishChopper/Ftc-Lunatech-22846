@@ -70,9 +70,8 @@ public class TeamTeleop extends LinearOpMode {
             triggers_value = rightTrigger + leftTrigger;
 
             //Set motor power:
-            //robot.setMotors(leftY1, leftX1, rightX1);
-            robot.moveMotors("FORWARD", leftY1);
-            robot.moveMotors("RIGHT", leftX1);
+            robot.setMotors(leftX1, leftY1, -rightX1);
+            //robot.moveMotors("FORWARD", leftY1);
 
             robot.moveLinearSlides(triggers_value);
 
