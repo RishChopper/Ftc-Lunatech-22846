@@ -41,7 +41,7 @@ public class TeamTeleop extends LinearOpMode {
     double linearSlide1RPM;
     double linearSlide2RPM;
 
-    robot = new TeamHardware(hardwareMap,telemetry);
+    robot = new TeamHardware(hardwareMap,telemetry,this);
     signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry);
     motorData = robot.getMotorData();
 
@@ -74,6 +74,8 @@ public class TeamTeleop extends LinearOpMode {
             //robot.moveMotors("FORWARD", leftY1);
 
             robot.moveLinearSlides(triggers_value);
+
+            robot.moveClaw(rightY1);
 
             /*if (a && b){
               robot.setServoPosition("Servo0", 0);

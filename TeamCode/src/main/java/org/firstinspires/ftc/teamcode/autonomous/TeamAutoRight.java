@@ -19,7 +19,7 @@ public class TeamAutoRight extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        robot = new TeamHardware(hardwareMap, telemetry);
+        robot = new TeamHardware(hardwareMap, telemetry, this);
         motorData = robot.getMotorData();
         signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry);
         robot.init_auto(this);

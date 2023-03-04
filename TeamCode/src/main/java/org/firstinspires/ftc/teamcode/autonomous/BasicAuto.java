@@ -12,7 +12,7 @@ public class BasicAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        robot = new TeamHardware(hardwareMap,telemetry);
+        robot = new TeamHardware(hardwareMap,telemetry, this);
         robot.init_auto(this);
 
         // Wait for the game to start (driver presses PLAY)

@@ -21,6 +21,8 @@ public class TeamHardware {
     private DcMotorEx motorRightBack;
     private DcMotorEx LinearSlide1;
     private DcMotorEx LinearSlide2;
+    private CRServo servoLeft;
+    private CRServo servoRight;
     HardwareMap hardwareMap;
     Telemetry telemetry;
     private ElapsedTime runtime;
@@ -42,9 +44,10 @@ public class TeamHardware {
     static final double     MAX_DRIVE_SPEED         = 0.4;
     static final double     COUNTS_PER_DEGREE       = 22* (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.14158* 90);
 
-    public TeamHardware (HardwareMap hwMap, Telemetry tmry){
+    public TeamHardware (HardwareMap hwMap, Telemetry tmry, LinearOpMode opMode){
         hardwareMap = hwMap;
         telemetry = tmry;
+        myOpMode = opMode;
         runtime = new ElapsedTime();
         motorLeftFront = hardwareMap.get(DcMotorEx.class, "motorLeftFront");
         motorRightFront = hardwareMap.get(DcMotorEx.class, "motorRightFront");
@@ -52,6 +55,8 @@ public class TeamHardware {
         motorRightBack = hardwareMap.get(DcMotorEx.class, "motorRightBack");
         LinearSlide1 = hardwareMap.get(DcMotorEx.class, "LinearSlide1");
         LinearSlide2 = hardwareMap.get(DcMotorEx.class, "LinearSlide2");
+        servoLeft = hardwareMap.get(CRServo.class, "servoLeft");
+        servoRight = hardwareMap.get(CRServo.class, "servoRight");
     }
 
     /* Initialize standard Hardware interfaces */
@@ -85,6 +90,11 @@ public class TeamHardware {
         LinearSlide2.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         LinearSlide2.setPower(0.0);
         LinearSlide2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
+        servoRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        servoLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        servoLeft.setPower(0);
+        servoRight.setPower(0);
     }
 
     public void init_auto(LinearOpMode opmode) {
@@ -134,6 +144,22 @@ public class TeamHardware {
     public void moveLinearSlides(double power){
         LinearSlide1.setPower(power * POWER_CHASSIS);
         LinearSlide2.setPower(power * POWER_CHASSIS);
+    }
+
+    public void moveClaw(double a)  //sets the motor speeds given an x, y and rotation value
+    {
+        try {
+            if(a > 0.4) {
+                servoRight.setPower(-0.3);
+            }
+            else if(a < -0.4){
+                servoRight.setPower(0.3);
+            }
+        } catch (Exception e) {
+            telemetry.addData("moveClaw", "%s", e.toString());
+            telemetry.update();
+            RobotLog.ee("SMTECH", e, "moveClaw");
+        }
     }
 
     public void setMotors(double x, double y, double rot)  //sets the motor speeds given an x, y and rotation value

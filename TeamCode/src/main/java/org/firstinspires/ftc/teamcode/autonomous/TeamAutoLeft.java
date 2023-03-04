@@ -25,7 +25,7 @@ public class TeamAutoLeft extends LinearOpMode {
     public void runOpMode() {
 
 
-        robot = new TeamHardware(hardwareMap, telemetry);
+        robot = new TeamHardware(hardwareMap, telemetry, this);
         motorData = robot.getMotorData();
         signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry);
         robot.init_auto(this);
@@ -41,10 +41,15 @@ public class TeamAutoLeft extends LinearOpMode {
             robot.encoderTurn(1.0, DataHolder.MOVEDIR.ROTATE_LEFT, 90, 5);
             robot.encoderDrive(1.0, DataHolder.MOVEDIR.FRONT, DataHolder.ONE_BLOCK, 5);
             //PICK UP CONE
+            robot.moveClaw(1);
+
             robot.encoderDrive(1.0, DataHolder.MOVEDIR.BACK, DataHolder.ONE_BLOCK, 5);
             robot.encoderTurn(1.0, DataHolder.MOVEDIR.ROTATE_LEFT, 135, 5);
             //DROP CONE
+            robot.moveClaw(-1);
+
             //REPEAT PROCESS AS LONG AS WE WANT
+
             //RETURN TO PARK
             robot.encoderTurn(1.0, DataHolder.MOVEDIR.ROTATE_RIGHT, 45, 5);
             if(signal_sleeve != 2){
