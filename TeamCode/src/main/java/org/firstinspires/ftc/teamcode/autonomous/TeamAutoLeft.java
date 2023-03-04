@@ -2,22 +2,29 @@ package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.util.RobotLog;
+import com.qualcomm.robotcore.hardware.LightSensor;
 
 import org.firstinspires.ftc.teamcode.data.DataHolder;
 import org.firstinspires.ftc.teamcode.data.MotorData;
 import org.firstinspires.ftc.teamcode.data.TeamHardware;
+
 
 @Autonomous(name = "Lunatech-AutoLeft", group = "MainCode")
 public class TeamAutoLeft extends LinearOpMode {
     private TeamHardware robot;
     private MotorData motorData;
     private SignalSleeveDetectorMain signalSleeveDetector;
+    private TeamHardware ColorSensor;
+
 
     int signal_sleeve = 0;
 
     @Override
     public void runOpMode() {
+
+
         robot = new TeamHardware(hardwareMap, telemetry);
         motorData = robot.getMotorData();
         signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry);
