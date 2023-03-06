@@ -1,8 +1,6 @@
 <component name="libraryTable">
   <library name="Gradle: org.firstinspires.ftc:gameAssets-PowerPlay:1.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/95694ff79f3ed7b29c03c378af4d0cb4/transformed/jetified-gameAssets-PowerPlay-1.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/95694ff79f3ed7b29c03c378af4d0cb4/transformed/jetified-gameAssets-PowerPlay-1.0.0/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/504a14b9635611489f49986cac707c0b/transformed/jetified-gameAssets-PowerPlay-1.0.0/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/504a14b9635611489f49986cac707c0b/transformed/jetified-gameAssets-PowerPlay-1.0.0/jars/classes.jar!/" />
     </CLASSES>

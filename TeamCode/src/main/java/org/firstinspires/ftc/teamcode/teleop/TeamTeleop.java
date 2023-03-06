@@ -54,36 +54,12 @@ public class TeamTeleop extends LinearOpMode {
 
         if (!gamepad1.atRest()) { // Only checks wheels & trigger
           try {
-
             leftX1 = Range.clip(gamepad1.left_stick_x, -1, 1);
             leftY1 = -Range.clip(gamepad1.left_stick_y, -1, 1);
             rightX1 = -Range.clip(gamepad1.right_stick_x, -1, 1);
-            rightY1 = Range.clip(gamepad1.right_stick_y, -1, 1);
-
-            a = gamepad1.a;
-            b = gamepad1.b;
-            x = gamepad1.x;
-            y = gamepad1.y;
-
-            rightTrigger = Range.clip(gamepad1.right_trigger, -1, 1);
-            leftTrigger = -Range.clip(gamepad1.left_trigger, -1, 1);
-            triggers_value = rightTrigger + leftTrigger;
 
             //Set motor power:
             robot.setMotors(leftX1, leftY1, -rightX1);
-            //robot.moveMotors("FORWARD", leftY1);
-
-            robot.moveLinearSlides(triggers_value);
-
-            robot.moveClaw(rightY1);
-
-            /*if (a && b){
-              robot.setServoPosition("Servo0", 0);
-            }else if (a){
-              robot.setServoPosition("Servo0", 180);
-            } else if (b) {
-              robot.setServoPosition("Servo0", 0);
-            }*/
 
             //Calculate RPM of Motors
             leftBackRPM = motorData.getBackLeft().getVelocity();
@@ -108,6 +84,26 @@ public class TeamTeleop extends LinearOpMode {
           }
         else{
           robot.stopChassisMotors();
+        }
+        if(!gamepad2.atRest()){
+          rightTrigger = Range.clip(gamepad1.right_trigger, -1, 1);
+          leftTrigger = -Range.clip(gamepad1.left_trigger, -1, 1);
+          triggers_value = rightTrigger + leftTrigger;
+
+          robot.moveLinearSlides(triggers_value);
+
+          a = gamepad2.a;
+          b = gamepad2.b;
+          x = gamepad2.x;
+          y = gamepad2.y;
+
+          if (a){
+            robot.moveClaw(1);
+          } else if(b){
+            robot.moveClaw(2);
+          }else if(x){
+            robot.moveClaw(3);
+          }
         }
         idle();
       }

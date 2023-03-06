@@ -29,6 +29,7 @@ public class TeamAutoLeft extends LinearOpMode {
         motorData = robot.getMotorData();
         signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry);
         robot.init_auto(this);
+        robot.moveClaw(1);
 
         waitForStart();
 
@@ -37,21 +38,24 @@ public class TeamAutoLeft extends LinearOpMode {
             telemetry.addData("Signal Sleeve: ", "%s", String.valueOf((signal_sleeve)));
             telemetry.update();
 
-            robot.encoderDrive(1.0, DataHolder.MOVEDIR.FRONT, 2*(DataHolder.ONE_BLOCK), 5);
-            robot.encoderTurn(1.0, DataHolder.MOVEDIR.ROTATE_LEFT, 90, 5);
-            robot.encoderDrive(1.0, DataHolder.MOVEDIR.FRONT, DataHolder.ONE_BLOCK, 5);
-            //PICK UP CONE
+            robot.encoderDrive(1, DataHolder.MOVEDIR.FRONT, -1, 5);
+            robot.encoderDrive(1, DataHolder.MOVEDIR.RIGHT, -21, 5);
+            robot.encoderDrive(1, DataHolder.MOVEDIR.FRONT, -60, 5);
+            robot.encoderTurn(1, DataHolder.MOVEDIR.ROTATE_LEFT, -42, 5);
+            robot.encoderDrive(1, DataHolder.MOVEDIR.FRONT, -10, 5);
+            //drop pre-loaded cone
+            robot.moveClaw(2);
+            sleep(500);
+            robot.moveClaw(3);
+            robot.encoderTurn(1, DataHolder.MOVEDIR.ROTATE_LEFT, -42, 5);
+            robot.encoderDrive(1, DataHolder.MOVEDIR.LEFT, -7, 5);
+            robot.encoderDrive(1, DataHolder.MOVEDIR.FRONT, -50, 5);
+            //pick up cone
             robot.moveClaw(1);
+            robot.encoderDrive(1, DataHolder.MOVEDIR.BACK, -21, 5);
+            robot.encoderTurn(1, DataHolder.MOVEDIR.ROTATE_RIGHT, -128, 5);
 
-            robot.encoderDrive(1.0, DataHolder.MOVEDIR.BACK, DataHolder.ONE_BLOCK, 5);
-            robot.encoderTurn(1.0, DataHolder.MOVEDIR.ROTATE_LEFT, 135, 5);
-            //DROP CONE
-            robot.moveClaw(-1);
-
-            //REPEAT PROCESS AS LONG AS WE WANT
-
-            //RETURN TO PARK
-            robot.encoderTurn(1.0, DataHolder.MOVEDIR.ROTATE_RIGHT, 45, 5);
+            /*
             if(signal_sleeve != 2){
                 //PARK
                 //DECIDE WHERE TO GO IN var - int signal_sleeve
@@ -68,7 +72,7 @@ public class TeamAutoLeft extends LinearOpMode {
 
                     default:
                 }
-            }
+            }*/
             //AUTONOMOUS ENDS
 
         }catch (Exception e){

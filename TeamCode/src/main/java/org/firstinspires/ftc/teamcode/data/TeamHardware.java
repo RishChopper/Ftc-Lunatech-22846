@@ -21,8 +21,7 @@ public class TeamHardware {
     private DcMotorEx motorRightBack;
     private DcMotorEx LinearSlide1;
     private DcMotorEx LinearSlide2;
-    private CRServo servoLeft;
-    private CRServo servoRight;
+    private CRServo claw;
     HardwareMap hardwareMap;
     Telemetry telemetry;
     private ElapsedTime runtime;
@@ -30,7 +29,7 @@ public class TeamHardware {
     private LinearOpMode myOpMode = null;
 
     final double POWER_CHASSIS = 1.0;
-    final double POWER_DRIVE_MOTORS = 0.85;
+    final double POWER_DRIVE_MOTORS = 0.9;
     final double POWER_MOTOR_LEFT_FRONT = 1.0;
     final double POWER_MOTOR_LEFT_BACK = 1.0;
     final double POWER_MOTOR_RIGHT_FRONT = 1.0;
@@ -55,8 +54,7 @@ public class TeamHardware {
         motorRightBack = hardwareMap.get(DcMotorEx.class, "motorRightBack");
         LinearSlide1 = hardwareMap.get(DcMotorEx.class, "LinearSlide1");
         LinearSlide2 = hardwareMap.get(DcMotorEx.class, "LinearSlide2");
-        servoLeft = hardwareMap.get(CRServo.class, "servoLeft");
-        servoRight = hardwareMap.get(CRServo.class, "servoRight");
+        claw = hardwareMap.get(CRServo.class, "claw");
     }
 
     /* Initialize standard Hardware interfaces */
@@ -90,11 +88,6 @@ public class TeamHardware {
         LinearSlide2.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         LinearSlide2.setPower(0.0);
         LinearSlide2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-
-        servoRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        servoLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        servoLeft.setPower(0);
-        servoRight.setPower(0);
     }
 
     public void init_auto(LinearOpMode opmode) {
@@ -146,14 +139,19 @@ public class TeamHardware {
         LinearSlide2.setPower(power * POWER_CHASSIS);
     }
 
-    public void moveClaw(double a)  //sets the motor speeds given an x, y and rotation value
+    public void moveClaw(int a)  //sets the motor speeds given an x, y and rotation value
     {
         try {
-            if(a > 0.4) {
-                servoRight.setPower(-0.3);
+            if(a == 1) {
+                //grab
+                claw.setPower(-0.3);
             }
-            else if(a < -0.4){
-                servoRight.setPower(0.3);
+            else if(a == 2){
+                //release
+                claw.setPower(0.3);
+            }else if(a == 3){
+                //no power
+                claw.setPower(0);
             }
         } catch (Exception e) {
             telemetry.addData("moveClaw", "%s", e.toString());
