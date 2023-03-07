@@ -52,7 +52,7 @@ public class TeamTeleop extends LinearOpMode {
       // Put run blocks here.
       while (opModeIsActive()) {
 
-        if (!gamepad1.atRest()) { // Only checks wheels & trigger
+        //if (!gamepad1.atRest()) { // Only checks wheels & trigger
           try {
             leftX1 = Range.clip(gamepad1.left_stick_x, -1, 1);
             leftY1 = -Range.clip(gamepad1.left_stick_y, -1, 1);
@@ -60,6 +60,25 @@ public class TeamTeleop extends LinearOpMode {
 
             //Set motor power:
             robot.setMotors(leftX1, leftY1, -rightX1);
+
+            rightTrigger = Range.clip(gamepad1.right_trigger, -1, 1);
+            leftTrigger = -Range.clip(gamepad1.left_trigger, -1, 1);
+            triggers_value = rightTrigger + leftTrigger;
+
+            robot.moveLinearSlides(triggers_value);
+
+            a = gamepad1.a;
+            b = gamepad1.b;
+            x = gamepad1.x;
+            y = gamepad1.y;
+
+            if (a){
+              robot.moveClaw(1);
+            } else if(b){
+              robot.moveClaw(2);
+            }else if(x){
+              robot.moveClaw(3);
+            }
 
             //Calculate RPM of Motors
             leftBackRPM = motorData.getBackLeft().getVelocity();
@@ -69,10 +88,13 @@ public class TeamTeleop extends LinearOpMode {
             rightBackRPM = (motorData.getBackRight().getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
             leftFrontRPM = (motorData.getFrontLeft().getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
             rightFrontRPM = (motorData.getFrontRight().getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
+            linearSlide1RPM = (motorData.getLinearSlide1().getVelocity() / 288) * 60;
+            linearSlide2RPM = (motorData.getLinearSlide2().getVelocity() / 288) * 60;
 
             //telemetry is the screen with debug info in Driver Station
             //telemetry.addData("GAMEPAD1", "Front %f,  Right %f, Turn %f", leftY1, leftX1, rightX1);
             telemetry.addData("RPM", "LEFTFRONT %f, RIGHTRONT %f, LEFTBACK %f, RIGHTBACK %f", leftFrontRPM, rightFrontRPM, leftBackRPM, rightBackRPM);
+            telemetry.addData("RPM", "LINEARSLIDE1 %f, LINEARSLIDE2 %f", linearSlide1RPM, linearSlide2RPM);
             telemetry.update();
             }
 
@@ -81,30 +103,13 @@ public class TeamTeleop extends LinearOpMode {
             telemetry.update();
             RobotLog.ee("Lunatech", e, "TELEOP 1");
             }
-          }
-        else{
-          robot.stopChassisMotors();
-        }
-        if(!gamepad2.atRest()){
-          rightTrigger = Range.clip(gamepad1.right_trigger, -1, 1);
-          leftTrigger = -Range.clip(gamepad1.left_trigger, -1, 1);
-          triggers_value = rightTrigger + leftTrigger;
+        //  }
+        //else{
+        //  robot.stopChassisMotors();
+        //}
+        //if(!gamepad2.atRest()){
 
-          robot.moveLinearSlides(triggers_value);
-
-          a = gamepad2.a;
-          b = gamepad2.b;
-          x = gamepad2.x;
-          y = gamepad2.y;
-
-          if (a){
-            robot.moveClaw(1);
-          } else if(b){
-            robot.moveClaw(2);
-          }else if(x){
-            robot.moveClaw(3);
-          }
-        }
+        //}
         idle();
       }
     }

@@ -4,6 +4,7 @@ import android.media.audiofx.DynamicsProcessing;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -82,12 +83,12 @@ public class TeamHardware {
         LinearSlide1.setDirection(DcMotorEx.Direction.FORWARD);
         LinearSlide1.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         LinearSlide1.setPower(0.0);
-        LinearSlide1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        LinearSlide1.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
         LinearSlide2.setDirection(DcMotorEx.Direction.REVERSE);
         LinearSlide2.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         LinearSlide2.setPower(0.0);
-        LinearSlide2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        LinearSlide2.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void init_auto(LinearOpMode opmode) {
@@ -119,11 +120,13 @@ public class TeamHardware {
         LinearSlide1.setDirection(DcMotorEx.Direction.FORWARD);
         LinearSlide1.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         LinearSlide1.setPower(0.0);
+        LinearSlide1.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         LinearSlide1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         LinearSlide2.setDirection(DcMotorEx.Direction.REVERSE);
         LinearSlide2.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         LinearSlide2.setPower(0.0);
+        LinearSlide2.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         LinearSlide2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
 /*        telemetry.addData("Starting at",  "%7d: %7d: %7d: %7d",
@@ -137,6 +140,17 @@ public class TeamHardware {
     public void moveLinearSlides(double power){
         LinearSlide1.setPower(power * POWER_CHASSIS);
         LinearSlide2.setPower(power * POWER_CHASSIS);
+    }
+
+    public void autoLinearSlides(){
+        LinearSlide1.setTargetPosition(2016);
+        LinearSlide2.setTargetPosition(2016);
+
+        LinearSlide1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        LinearSlide2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+
+        LinearSlide1.setPower(1);
+        LinearSlide2.setPower(1);
     }
 
     public void moveClaw(int a)  //sets the motor speeds given an x, y and rotation value
@@ -183,38 +197,6 @@ public class TeamHardware {
         }
     }
 
-    public void moveMotors(String direction, double power){
-        switch (direction){
-            case "FORWARD":
-                motorLeftFront.setPower(power);
-                motorLeftBack.setPower(power);
-                motorRightFront.setPower(power);
-                motorRightBack.setPower(power);
-                break;
-
-            case "BACKWARD":
-                motorLeftFront.setPower(-power);
-                motorLeftBack.setPower(-power);
-                motorRightFront.setPower(-power);
-                motorRightBack.setPower(-power);
-                break;
-
-            case "LEFT":
-                motorLeftFront.setPower(power);
-                motorLeftBack.setPower(-power);
-                motorRightFront.setPower(-power);
-                motorRightBack.setPower(power);
-                break;
-
-            case "RIGHT":
-                motorLeftFront.setPower(-power);
-                motorLeftBack.setPower(power);
-                motorRightFront.setPower(power);
-                motorRightBack.setPower(-power);
-                break;
-        }
-    }
-
     public MotorData getMotorData(){
         MotorData motorData = new MotorData(motorLeftFront, motorRightFront, motorLeftBack, motorRightBack, LinearSlide1, LinearSlide2);
         return motorData;
@@ -229,7 +211,6 @@ public class TeamHardware {
                 setChassisTargetPosition(dir, distance);
                 beginChassisMotion(speed);
                 moveChassisToTarget(dir, timeoutS);
-                stopChassisMotors();
             }
         }
         catch (Exception e) {
@@ -252,7 +233,6 @@ public class TeamHardware {
 
                 beginChassisMotion(speed);
                 moveChassisToTarget(dir, timeoutS);
-                stopChassisMotors();
             }
         }
         catch (Exception e) {
