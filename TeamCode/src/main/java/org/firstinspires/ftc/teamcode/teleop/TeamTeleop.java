@@ -26,13 +26,12 @@ public class TeamTeleop extends LinearOpMode {
     double leftX1;
     double leftY1;
     double rightX1;
-    double rightY1;
 
     double triggers_value;
     double rightTrigger;
     double leftTrigger;
 
-    boolean a, b, x, y;
+    boolean a, b;
 
     double leftFrontRPM;
     double rightFrontRPM;
@@ -61,23 +60,19 @@ public class TeamTeleop extends LinearOpMode {
             //Set motor power:
             robot.setMotors(leftX1, leftY1, -rightX1);
 
-            rightTrigger = Range.clip(gamepad1.right_trigger, -1, 1);
-            leftTrigger = -Range.clip(gamepad1.left_trigger, -1, 1);
+            rightTrigger = Range.clip(gamepad2.right_trigger, -1, 1);
+            leftTrigger = -Range.clip(gamepad2.left_trigger, -1, 1);
             triggers_value = rightTrigger + leftTrigger;
 
             robot.moveLinearSlides(triggers_value);
 
-            a = gamepad1.a;
-            b = gamepad1.b;
-            x = gamepad1.x;
-            y = gamepad1.y;
+            a = gamepad2.a;
+            b = gamepad2.b;
 
             if (a){
               robot.moveClaw(1);
             } else if(b){
               robot.moveClaw(2);
-            }else if(x){
-              robot.moveClaw(3);
             }
 
             //Calculate RPM of Motors

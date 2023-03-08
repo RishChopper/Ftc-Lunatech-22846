@@ -22,7 +22,7 @@ public class TeamHardware {
     private DcMotorEx motorRightBack;
     private DcMotorEx LinearSlide1;
     private DcMotorEx LinearSlide2;
-    private CRServo claw;
+    private Servo claw;
     HardwareMap hardwareMap;
     Telemetry telemetry;
     private ElapsedTime runtime;
@@ -55,7 +55,7 @@ public class TeamHardware {
         motorRightBack = hardwareMap.get(DcMotorEx.class, "motorRightBack");
         LinearSlide1 = hardwareMap.get(DcMotorEx.class, "LinearSlide1");
         LinearSlide2 = hardwareMap.get(DcMotorEx.class, "LinearSlide2");
-        claw = hardwareMap.get(CRServo.class, "claw");
+        claw = hardwareMap.get(Servo.class, "claw");
     }
 
     /* Initialize standard Hardware interfaces */
@@ -138,8 +138,10 @@ public class TeamHardware {
     }
 
     public void moveLinearSlides(double power){
-        LinearSlide1.setPower(power * POWER_CHASSIS);
-        LinearSlide2.setPower(power * POWER_CHASSIS);
+        LinearSlide1.setPower(power);
+        LinearSlide2.setPower(power);
+        telemetry.addData("Slide 1 velocity", LinearSlide1.getVelocity());
+        telemetry.addData("Slide 2 velocity", LinearSlide2.getVelocity());
     }
 
     public void autoLinearSlides(){
@@ -158,14 +160,11 @@ public class TeamHardware {
         try {
             if(a == 1) {
                 //grab
-                claw.setPower(-0.3);
+                claw.setPosition(0.85);
             }
             else if(a == 2){
                 //release
-                claw.setPower(0.3);
-            }else if(a == 3){
-                //no power
-                claw.setPower(0);
+                claw.setPosition(0.7);
             }
         } catch (Exception e) {
             telemetry.addData("moveClaw", "%s", e.toString());

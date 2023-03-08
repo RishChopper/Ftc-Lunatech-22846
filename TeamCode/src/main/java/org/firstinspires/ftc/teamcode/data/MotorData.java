@@ -19,13 +19,6 @@ public class MotorData {
         this.linearSlide2 = linearSlide2;
     }
 
-    public MotorData(DcMotorEx frontLeft, DcMotorEx frontRight, DcMotorEx backLeft, DcMotorEx backRight) {
-        this.frontLeft = frontLeft;
-        this.frontRight = frontRight;
-        this.backLeft = backLeft;
-        this.backRight = backRight;
-    }
-
     public DcMotorEx getFrontLeft() {
         return frontLeft;
     }

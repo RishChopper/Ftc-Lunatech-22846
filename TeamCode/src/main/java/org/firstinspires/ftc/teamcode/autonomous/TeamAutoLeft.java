@@ -40,14 +40,13 @@ public class TeamAutoLeft extends LinearOpMode {
 
             robot.encoderDrive(1, DataHolder.MOVEDIR.FRONT, -1, 5);
             robot.encoderDrive(1, DataHolder.MOVEDIR.RIGHT, -21, 5);
+            robot.autoLinearSlides();
             robot.encoderDrive(1, DataHolder.MOVEDIR.FRONT, -60, 5);
             robot.encoderTurn(1, DataHolder.MOVEDIR.ROTATE_LEFT, -42, 5);
             robot.encoderDrive(1, DataHolder.MOVEDIR.FRONT, -10, 5);
-            robot.autoLinearSlides();
             //drop pre-loaded cone
             robot.moveClaw(2);
             sleep(500);
-            robot.moveClaw(3);
             robot.encoderTurn(1, DataHolder.MOVEDIR.ROTATE_LEFT, -42, 5);
             robot.encoderDrive(1, DataHolder.MOVEDIR.LEFT, -7, 5);
             robot.encoderDrive(1, DataHolder.MOVEDIR.FRONT, -50, 5);
