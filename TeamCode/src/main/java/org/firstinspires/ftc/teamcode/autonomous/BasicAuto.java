@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.data.DataHolder;
 import org.firstinspires.ftc.teamcode.data.TeamHardware;
 
-@Autonomous(name="BasicAuto", group="Lunatech")
+@Autonomous(name="Lunatech-BasicAuto", group="Testers")
 public class BasicAuto extends LinearOpMode {
 
     private TeamHardware robot;
@@ -23,9 +23,10 @@ public class BasicAuto extends LinearOpMode {
 
         //robot.encoderDrive(1, DataHolder.MOVEDIR.FRONT, 22.75, 5);
 
-        robot.encoderTurn(1, DataHolder.MOVEDIR.ROTATE_RIGHT, -82, 5);
-
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
+        robot.autoLinearSlides("up");
+        while(true){
+            telemetry.addData("Oink", "Test");
+            telemetry.update();
+        }
     }
 }

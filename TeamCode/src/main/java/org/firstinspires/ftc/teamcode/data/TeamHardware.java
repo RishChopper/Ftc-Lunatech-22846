@@ -15,6 +15,8 @@ import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import java.util.Objects;
+
 public class TeamHardware {
     private DcMotorEx motorLeftFront;
     private DcMotorEx motorRightFront;
@@ -144,15 +146,38 @@ public class TeamHardware {
         telemetry.addData("Slide 2 velocity", LinearSlide2.getVelocity());
     }
 
-    public void autoLinearSlides(){
-        LinearSlide1.setTargetPosition(2016);
-        LinearSlide2.setTargetPosition(2016);
+    public void autoLinearSlides(String dir){
+        if(dir.equals("up")){
+            LinearSlide1.setTargetPosition(1530);
+            LinearSlide2.setTargetPosition(1530);
 
-        LinearSlide1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        LinearSlide2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            LinearSlide1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            LinearSlide2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
-        LinearSlide1.setPower(1);
-        LinearSlide2.setPower(1);
+            LinearSlide1.setPower(1);
+            LinearSlide2.setPower(1);
+        }else if(dir.equals("down")){
+            LinearSlide1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            LinearSlide2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            LinearSlide1.setTargetPosition(-1530);
+            LinearSlide2.setTargetPosition(-1530);
+
+            LinearSlide1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            LinearSlide2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+
+            LinearSlide1.setPower(1);
+            LinearSlide2.setPower(1);
+        }else if(dir.equals("lil_up")){
+            LinearSlide1.setTargetPosition(30);
+            LinearSlide2.setTargetPosition(30);
+
+            LinearSlide1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            LinearSlide2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+
+            LinearSlide1.setPower(1);
+            LinearSlide2.setPower(1);
+        }
     }
 
     public void moveClaw(int a)  //sets the motor speeds given an x, y and rotation value
