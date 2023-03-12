@@ -14,17 +14,13 @@ import org.firstinspires.ftc.teamcode.data.TeamHardware;
 @Autonomous(name = "Lunatech-AutoLeft", group = "MainCode")
 public class TeamAutoLeft extends LinearOpMode {
     private TeamHardware robot;
-    private MotorData motorData;
     private SignalSleeveDetectorMain signalSleeveDetector;
 
     int signal_sleeve = 0;
 
     @Override
     public void runOpMode() {
-
-
         robot = new TeamHardware(hardwareMap, telemetry, this);
-        motorData = robot.getMotorData();
         signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry);
         robot.init_auto(this);
         robot.moveClaw(2);
@@ -37,41 +33,40 @@ public class TeamAutoLeft extends LinearOpMode {
             telemetry.addData("Signal Sleeve: ", "%s", String.valueOf((signal_sleeve)));
             telemetry.update();
 
-            robot.autoLinearSlides("lil_up");
-            robot.encoderDrive(1, DataHolder.MOVEDIR.FRONT, -1, 5);
-            robot.encoderDrive(1, DataHolder.MOVEDIR.RIGHT, -20, 5);
             robot.autoLinearSlides("up");
-            robot.encoderDrive(1, DataHolder.MOVEDIR.FRONT, -60, 5);
-            robot.encoderTurn(1, DataHolder.MOVEDIR.ROTATE_LEFT, -42, 5);
-            robot.encoderDrive(1, DataHolder.MOVEDIR.FRONT, -10, 5);
+            robot.encoderDrive(0.5, DataHolder.MOVEDIR.RIGHT, -3, 5);
+            robot.encoderDrive(0.5, DataHolder.MOVEDIR.FRONT, -65, 5);
+            robot.encoderDrive(0.5, DataHolder.MOVEDIR.RIGHT, -14, 5);
+            robot.encoderDrive(0.5, DataHolder.MOVEDIR.FRONT, -2, 5);
+            robot.autoLinearSlides("down");
             //drop pre-loaded cone
             robot.moveClaw(1);
             sleep(500);
-            robot.autoLinearSlides("down");
-            robot.encoderTurn(1, DataHolder.MOVEDIR.ROTATE_LEFT, -42, 5);
-            robot.encoderDrive(1, DataHolder.MOVEDIR.LEFT, -10, 5);
 
-            if(signal_sleeve != 3){
-                //PARK
-                //DECIDE WHERE TO GO IN var - int signal_sleeve
-                switch(signal_sleeve){
-                    case 1:
-                        //GO TO SPOT 1
-                        robot.encoderDrive(1.0, DataHolder.MOVEDIR.FRONT, -40, 5);
-                        break;
+            robot.encoderDrive(0.5, DataHolder.MOVEDIR.BACK, -6, 5);
 
-                    case 3:
-                        //GO TO SPOT 3
-                        robot.encoderDrive(1.0, DataHolder.MOVEDIR.FRONT, -20, 5);
-                        break;
-                }
+            switch(signal_sleeve){
+                case 1:
+                    robot.encoderDrive(0.5, DataHolder.MOVEDIR.LEFT, -34, 5);
+                    break;
+                case 3:
+                    //GO TO SPOT 3
+                    robot.encoderDrive(0.5, DataHolder.MOVEDIR.RIGHT, -10, 5);
+                    break;
+
+                case 2:
+                    //GO TO SPOT 2
+                    robot.encoderDrive(0.5, DataHolder.MOVEDIR.LEFT, -10, 5);
+                    break;
             }
+
+
             //AUTONOMOUS ENDS
 
         }catch (Exception e){
-            telemetry.addData("CRITICAL_ERROR_AUTONOMOUS_1: ", "%s", e.toString());
+            telemetry.addData("CRITICAL_ERROR_AUTONOMOUS_2: ", "%s", e.toString());
             telemetry.update();
-            RobotLog.ee("Lunatech", e, "AUTO 1");
+            RobotLog.ee("Lunatech", e, "AUTO 2");
         }
     }
 }

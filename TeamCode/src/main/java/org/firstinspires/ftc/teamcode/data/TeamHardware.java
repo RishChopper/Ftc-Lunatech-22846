@@ -148,8 +148,8 @@ public class TeamHardware {
 
     public void autoLinearSlides(String dir){
         if(dir.equals("up")){
-            LinearSlide1.setTargetPosition(1530);
-            LinearSlide2.setTargetPosition(1530);
+            LinearSlide1.setTargetPosition(1540);
+            LinearSlide2.setTargetPosition(1540);
 
             LinearSlide1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
             LinearSlide2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -159,9 +159,11 @@ public class TeamHardware {
         }else if(dir.equals("down")){
             LinearSlide1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             LinearSlide2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            LinearSlide1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            LinearSlide2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            LinearSlide1.setTargetPosition(-1530);
-            LinearSlide2.setTargetPosition(-1530);
+            LinearSlide1.setTargetPosition(-300);
+            LinearSlide2.setTargetPosition(-300);
 
             LinearSlide1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
             LinearSlide2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
