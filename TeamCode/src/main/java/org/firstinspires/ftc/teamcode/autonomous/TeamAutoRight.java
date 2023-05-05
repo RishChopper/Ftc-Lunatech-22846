@@ -23,46 +23,16 @@ public class TeamAutoRight extends LinearOpMode {
         robot = new TeamHardware(hardwareMap, telemetry, this);
         signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry);
         robot.init_auto(this);
-        robot.moveClaw(2);
-        sleep(500);
+        robot.moveClaw(false);
 
         waitForStart();
 
         try {
             signal_sleeve = signalSleeveDetector.getDetected_tag();
             telemetry.addData("Signal Sleeve: ", "%s", String.valueOf((signal_sleeve)));
+
+
             telemetry.update();
-
-            robot.autoLinearSlides("up");
-            robot.encoderDrive(0.5, DataHolder.MOVEDIR.RIGHT, -3, 5);
-            robot.encoderDrive(0.5, DataHolder.MOVEDIR.FRONT, -65, 5);
-            robot.encoderDrive(0.5, DataHolder.MOVEDIR.LEFT, -14, 5);
-            robot.encoderDrive(0.5, DataHolder.MOVEDIR.FRONT, -2, 5);
-            robot.autoLinearSlides("down");
-            //drop pre-loaded cone
-            robot.moveClaw(1);
-            sleep(500);
-
-            robot.encoderDrive(0.5, DataHolder.MOVEDIR.BACK, -6, 5);
-
-            switch(signal_sleeve){
-                case 1:
-                    robot.encoderDrive(0.5, DataHolder.MOVEDIR.LEFT, -10, 5);
-                    break;
-                case 3:
-                    //GO TO SPOT 3
-                    robot.encoderDrive(0.5, DataHolder.MOVEDIR.RIGHT, -34, 5);
-                    break;
-
-                case 2:
-                    //GO TO SPOT 2
-                    robot.encoderDrive(0.5, DataHolder.MOVEDIR.RIGHT, -10, 5);
-                    break;
-            }
-
-
-            //AUTONOMOUS ENDS
-
         }catch (Exception e){
             telemetry.addData("CRITICAL_ERROR_AUTONOMOUS_2: ", "%s", e.toString());
             telemetry.update();

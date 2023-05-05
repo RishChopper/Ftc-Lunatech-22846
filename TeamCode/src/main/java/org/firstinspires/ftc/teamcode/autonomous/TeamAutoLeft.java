@@ -23,7 +23,7 @@ public class TeamAutoLeft extends LinearOpMode {
         robot = new TeamHardware(hardwareMap, telemetry, this);
         signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry);
         robot.init_auto(this);
-        robot.moveClaw(2);
+        //robot.moveClaw(2);
         sleep(500);
 
         waitForStart();
@@ -33,14 +33,14 @@ public class TeamAutoLeft extends LinearOpMode {
             telemetry.addData("Signal Sleeve: ", "%s", String.valueOf((signal_sleeve)));
             telemetry.update();
 
-            robot.autoLinearSlides("up");
+            //robot.autoLinearSlides("up");
             robot.encoderDrive(0.5, DataHolder.MOVEDIR.RIGHT, -3, 5);
             robot.encoderDrive(0.5, DataHolder.MOVEDIR.FRONT, -65, 5);
             robot.encoderDrive(0.5, DataHolder.MOVEDIR.RIGHT, -14, 5);
             robot.encoderDrive(0.5, DataHolder.MOVEDIR.FRONT, -2, 5);
-            robot.autoLinearSlides("down");
+            //robot.autoLinearSlides("down");
             //drop pre-loaded cone
-            robot.moveClaw(1);
+            //robot.moveClaw(1);
             sleep(500);
 
             robot.encoderDrive(0.5, DataHolder.MOVEDIR.BACK, -6, 5);

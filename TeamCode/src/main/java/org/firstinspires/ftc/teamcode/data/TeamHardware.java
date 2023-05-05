@@ -22,9 +22,11 @@ public class TeamHardware {
     private DcMotorEx motorRightFront;
     private DcMotorEx motorLeftBack;
     private DcMotorEx motorRightBack;
-    private DcMotorEx LinearSlide1;
-    private DcMotorEx LinearSlide2;
-    private Servo claw;
+    private DcMotorEx intakeLinearSlide;
+    private DcMotorEx dropLinearSlide;
+    private Servo intakeClaw;
+    private Servo dropClaw;
+    private Servo dropClawRotate;
     HardwareMap hardwareMap;
     Telemetry telemetry;
     private ElapsedTime runtime;
@@ -32,14 +34,14 @@ public class TeamHardware {
     private LinearOpMode myOpMode = null;
 
     final double POWER_CHASSIS = 1.0;
-    final double POWER_DRIVE_MOTORS = 0.9;
+    final double POWER_DRIVE_MOTORS = 1.0;
     final double POWER_MOTOR_LEFT_FRONT = 1.0;
     final double POWER_MOTOR_LEFT_BACK = 1.0;
     final double POWER_MOTOR_RIGHT_FRONT = 1.0;
     final double POWER_MOTOR_RIGHT_BACK = 1.0;
     private double r, robotAngle, v1, v2, v3, v4;
 
-    public static final double COUNTS_PER_MOTOR_REV = 537.6898396; //Gobilda 5202 Motor Encoder 19.2:1	((((1+(46/17))) * (1+(46/11))) * 28)
+    public static final double COUNTS_PER_MOTOR_REV = 537.7; //Gobilda 5203 Motor Encoder 19.2:1	((((1+(46/17))) * (1+(46/11))) * 28)
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 3.937 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.14158);
@@ -55,9 +57,14 @@ public class TeamHardware {
         motorRightFront = hardwareMap.get(DcMotorEx.class, "motorRightFront");
         motorLeftBack = hardwareMap.get(DcMotorEx.class, "motorLeftBack");
         motorRightBack = hardwareMap.get(DcMotorEx.class, "motorRightBack");
-        LinearSlide1 = hardwareMap.get(DcMotorEx.class, "LinearSlide1");
-        LinearSlide2 = hardwareMap.get(DcMotorEx.class, "LinearSlide2");
-        claw = hardwareMap.get(Servo.class, "claw");
+        intakeLinearSlide = hardwareMap.get(DcMotorEx.class, "IntakeSlide");
+        dropLinearSlide = hardwareMap.get(DcMotorEx.class, "IntakeSlide");
+        intakeClaw = hardwareMap.get(Servo.class, "intakeClaw");
+        dropClaw = hardwareMap.get(Servo.class, "dropClaw");
+        dropClawRotate = hardwareMap.get(Servo.class, "dropClawRotate");
+        intakeClaw.getController().pwmEnable();
+        dropClaw.getController().pwmEnable();
+        dropClawRotate.getController().pwmEnable();
     }
 
     /* Initialize standard Hardware interfaces */
@@ -82,15 +89,15 @@ public class TeamHardware {
         motorRightBack.setPower(0.0);
         motorRightBack.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
-        LinearSlide1.setDirection(DcMotorEx.Direction.FORWARD);
-        LinearSlide1.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        LinearSlide1.setPower(0.0);
-        LinearSlide1.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        intakeLinearSlide.setDirection(DcMotorEx.Direction.FORWARD);
+        intakeLinearSlide.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        intakeLinearSlide.setPower(0.0);
+        intakeLinearSlide.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
-        LinearSlide2.setDirection(DcMotorEx.Direction.REVERSE);
-        LinearSlide2.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        LinearSlide2.setPower(0.0);
-        LinearSlide2.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        dropLinearSlide.setDirection(DcMotorEx.Direction.FORWARD);
+        dropLinearSlide.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        dropLinearSlide.setPower(0.0);
+        dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void init_auto(LinearOpMode opmode) {
@@ -119,84 +126,83 @@ public class TeamHardware {
         motorRightBack.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         motorRightBack.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        LinearSlide1.setDirection(DcMotorEx.Direction.FORWARD);
-        LinearSlide1.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        LinearSlide1.setPower(0.0);
-        LinearSlide1.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        LinearSlide1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        intakeLinearSlide.setDirection(DcMotorEx.Direction.FORWARD);
+        intakeLinearSlide.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        intakeLinearSlide.setPower(0.0);
+        intakeLinearSlide.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        intakeLinearSlide.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        LinearSlide2.setDirection(DcMotorEx.Direction.REVERSE);
-        LinearSlide2.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        LinearSlide2.setPower(0.0);
-        LinearSlide2.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        LinearSlide2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-
-/*        telemetry.addData("Starting at",  "%7d: %7d: %7d: %7d",
-                motorLeftFront.getCurrentPosition(),
-                motorRightFront.getCurrentPosition(),
-                motorLeftBack.getCurrentPosition(),
-                motorRightBack.getCurrentPosition());
-        telemetry.update();*/
+        dropLinearSlide.setDirection(DcMotorEx.Direction.FORWARD);
+        dropLinearSlide.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        dropLinearSlide.setPower(0.0);
+        dropLinearSlide.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
     }
 
-    public void moveLinearSlides(double power){
-        LinearSlide1.setPower(power);
-        LinearSlide2.setPower(power);
-        telemetry.addData("Slide 1 velocity", LinearSlide1.getVelocity());
-        telemetry.addData("Slide 2 velocity", LinearSlide2.getVelocity());
+    public void manualLinearSlides(double madman_power, double scorpion_power){
+        dropLinearSlide.setPower(madman_power);
+        intakeLinearSlide.setPower(scorpion_power);
     }
 
-    public void autoLinearSlides(String dir){
-        if(dir.equals("up")){
-            LinearSlide1.setTargetPosition(1540);
-            LinearSlide2.setTargetPosition(1540);
+    public void autoDropLinearSlides(int level){
+        switch (level){
+            case 0:
+                dropLinearSlide.setTargetPosition(-dropLinearSlide.getTargetPosition());
+                dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+                dropLinearSlide.setPower(1);
+                break;
 
-            LinearSlide1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-            LinearSlide2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            case 1:
+                dropLinearSlide.setTargetPosition(-dropLinearSlide.getTargetPosition() + 520);
+                dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+                dropLinearSlide.setPower(1);
+                break;
 
-            LinearSlide1.setPower(1);
-            LinearSlide2.setPower(1);
-        }else if(dir.equals("down")){
-            LinearSlide1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            LinearSlide2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            LinearSlide1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            LinearSlide2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            case 2:
+                dropLinearSlide.setTargetPosition(-dropLinearSlide.getTargetPosition() + 1030);
+                dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+                dropLinearSlide.setPower(1);
+                break;
 
-            LinearSlide1.setTargetPosition(-300);
-            LinearSlide2.setTargetPosition(-300);
-
-            LinearSlide1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-            LinearSlide2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-
-            LinearSlide1.setPower(1);
-            LinearSlide2.setPower(1);
-        }else if(dir.equals("lil_up")){
-            LinearSlide1.setTargetPosition(30);
-            LinearSlide2.setTargetPosition(30);
-
-            LinearSlide1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-            LinearSlide2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-
-            LinearSlide1.setPower(1);
-            LinearSlide2.setPower(1);
+            case 3:
+                dropLinearSlide.setTargetPosition(-dropLinearSlide.getTargetPosition() + 1540);
+                dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+                dropLinearSlide.setPower(1);
+                break;
         }
     }
 
-    public void moveClaw(int a)  //sets the motor speeds given an x, y and rotation value
-    {
+    public void autoIntakeLinearSlide(boolean extend){
+        if (extend){
+            dropLinearSlide.setTargetPosition(-dropLinearSlide.getTargetPosition() + 116);
+            dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            dropLinearSlide.setPower(1);
+        }else{
+            dropLinearSlide.setTargetPosition(-dropLinearSlide.getTargetPosition());
+            dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            dropLinearSlide.setPower(1);
+        }
+    }
+
+    public void moveClaws(boolean drop_claw_pos, boolean scorp_claw_pos){  //true = open; false = close;
         try {
-            if(a == 1) {
-                //grab
-                claw.setPosition(0.85);
+            if (drop_claw_pos){
+                dropClaw.getController().pwmEnable();
+                dropClaw.setPosition(0.2);
+            }else{
+                dropClaw.getController().pwmDisable();
             }
-            else if(a == 2){
-                //release
-                claw.setPosition(0.7);
+
+            if (scorp_claw_pos){
+                dropClaw.getController().pwmEnable();
+                dropClaw.setPosition(0.2);
+            }else{
+                dropClaw.getController().pwmDisable();
             }
         } catch (Exception e) {
             telemetry.addData("moveClaw", "%s", e.toString());
             telemetry.update();
-            RobotLog.ee("SMTECH", e, "moveClaw");
+            RobotLog.ee("Lunatech", e, "moveClaw");
         }
     }
 
@@ -219,12 +225,12 @@ public class TeamHardware {
         catch(Exception e){
             telemetry.addData("setMotors", "%s", e.toString());
             telemetry.update();
-            RobotLog.ee("SMTECH", e, "setMotors");
+            RobotLog.ee("Lunatech", e, "setMotors");
         }
     }
 
     public MotorData getMotorData(){
-        MotorData motorData = new MotorData(motorLeftFront, motorRightFront, motorLeftBack, motorRightBack, LinearSlide1, LinearSlide2);
+        MotorData motorData = new MotorData(motorLeftFront, motorRightFront, motorLeftBack, motorRightBack, intakeLinearSlide, dropLinearSlide, intakeClaw, dropClaw, dropClawRotate);
         return motorData;
     }
 
@@ -357,21 +363,6 @@ public class TeamHardware {
         }
     }
 
-    /*public void setServo0Power(double power){
-        Servo0.setPower(power);
-    }*/
-/*
-    public void setServoPosition(String servo, double degrees){
-        switch(servo){
-            case "Servo0":
-                Servo0.setPosition(degrees);
-                break;
-
-            default:
-        }
-    }
- */
-
     public void setChassisTargetPosition( DataHolder.MOVEDIR dir, double distance){
         int targetPos;
         targetPos = (int)(distance * COUNTS_PER_INCH);
@@ -445,8 +436,8 @@ public class TeamHardware {
         motorLeftBack.setPower(0);
         motorRightBack.setPower(0);
 
-        LinearSlide1.setPower(0);
-        LinearSlide2.setPower(0);
+        intakeLinearSlide.setPower(0);
+        dropLinearSlide.setPower(0);
     }
 
     void stopChassis() {
@@ -463,18 +454,17 @@ public class TeamHardware {
             motorLeftBack.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
             motorRightBack.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-            LinearSlide1.setPower(0);
-            LinearSlide2.setPower(0);
+            intakeLinearSlide.setPower(0);
+            dropLinearSlide.setPower(0);
+
+            intakeClaw.getController().pwmDisable();
+            dropClaw.getController().pwmDisable();
+            dropClawRotate.getController().pwmDisable();
         }
         catch(Exception e){
             myOpMode.telemetry.addData("Exception stopChassis", e.toString());
             myOpMode.telemetry.update();
-            RobotLog.ee("SMTECH", e, "exception in stopChassis()");
+            RobotLog.ee("Lunatech", e, "exception in stopChassis()");
         }
     }
-
-    void stopGamepad1Motors(){
-        stopChassisMotors();
-    }
-
 }
