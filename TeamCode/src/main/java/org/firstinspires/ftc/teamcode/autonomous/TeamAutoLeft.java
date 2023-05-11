@@ -21,7 +21,7 @@ public class TeamAutoLeft extends LinearOpMode {
     @Override
     public void runOpMode() {
         robot = new TeamHardware(hardwareMap, telemetry, this);
-        signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry);
+        //signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry);
         robot.init_auto(this);
         //robot.moveClaw(2);
         sleep(500);
@@ -29,7 +29,7 @@ public class TeamAutoLeft extends LinearOpMode {
         waitForStart();
 
         try {
-            signal_sleeve = signalSleeveDetector.getDetected_tag();
+            //signal_sleeve = signalSleeveDetector.getDetected_tag();
             telemetry.addData("Signal Sleeve: ", "%s", String.valueOf((signal_sleeve)));
             telemetry.update();
 

@@ -13,23 +13,24 @@ import org.firstinspires.ftc.teamcode.data.TeamHardware;
 
 @Autonomous(name = "Lunatech-AutoRight", group = "MainCode")
 public class TeamAutoRight extends LinearOpMode {
-    private TeamHardware robot;
+    //private TeamHardware robot;
     private SignalSleeveDetectorMain signalSleeveDetector;
 
     int signal_sleeve = 0;
 
     @Override
     public void runOpMode() {
-        robot = new TeamHardware(hardwareMap, telemetry, this);
-        signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry);
-        robot.init_auto(this);
-        robot.moveClaw(false);
+        //robot = new TeamHardware(hardwareMap, telemetry, this);
+        signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry, 5000);
+        signalSleeveDetector.init();
+        //robot.init_auto(this);
+        //robot.moveClaws(false, false);
 
         waitForStart();
 
         try {
             signal_sleeve = signalSleeveDetector.getDetected_tag();
-            telemetry.addData("Signal Sleeve: ", "%s", String.valueOf((signal_sleeve)));
+            telemetry.addData("APRIL TAG Signal Sleeve: ", "%s", String.valueOf((signal_sleeve)));
 
 
             telemetry.update();
