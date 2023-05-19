@@ -234,6 +234,13 @@ public class TeamHardware {
         return motorData;
     }
 
+    public int[] revEncoderDrive(int encoder_1_ticks, int encoder_2_ticks, int encoder_3_ticks){
+        int[] encoder_error = new int[3];
+
+
+        return encoder_error;
+    }
+
     public void encoderDrive(double speed, DataHolder.MOVEDIR dir, double distance,
                              double timeoutS) {
 

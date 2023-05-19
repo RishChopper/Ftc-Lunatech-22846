@@ -31,8 +31,6 @@ public class TeamAutoRight extends LinearOpMode {
         try {
             signal_sleeve = signalSleeveDetector.getDetected_tag();
             telemetry.addData("APRIL TAG Signal Sleeve: ", "%s", String.valueOf((signal_sleeve)));
-
-
             telemetry.update();
         }catch (Exception e){
             telemetry.addData("CRITICAL_ERROR_AUTONOMOUS_2: ", "%s", e.toString());
