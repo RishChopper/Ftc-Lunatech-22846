@@ -16,6 +16,7 @@ public class TeamTeleop extends LinearOpMode {
         double leftY1;
         double leftY2;
         double rightX1;
+        double rightY1;
 
         double triggers_value;
         double rightTrigger;
@@ -52,13 +53,16 @@ public class TeamTeleop extends LinearOpMode {
                     leftX1 = Range.clip(gamepad1.left_stick_x, -1, 1);
                     leftY1 = -Range.clip(gamepad1.left_stick_y, -1, 1);
                     leftY2 = -Range.clip(gamepad2.left_stick_y, -1, 1);
-                    rightX1 = -Range.clip(gamepad1.right_stick_x, -1, 1);
+                    rightX1 = Range.clip(gamepad1.right_stick_x, -1, 1);
+                    rightY1 = -Range.clip(gamepad1.right_stick_y, -1, 1);
+
                     rightTrigger = Range.clip(gamepad2.right_trigger, -1, 1);
                     leftTrigger = -Range.clip(gamepad2.left_trigger, -1, 1);
                     triggers_value = rightTrigger + leftTrigger;
                     //=========================================================================================
                     //                                      BOT MODE
                     //=========================================================================================
+                    /*
                     if(bot_mode){
                         telemetry.addData("BOT_MODE", "Madman");
                     }else {
@@ -70,12 +74,20 @@ public class TeamTeleop extends LinearOpMode {
                     } else if (gamepad2.dpad_right) {
                         bot_mode = true;
                     }
+                    */
                     //=========================================================================================
                     //                                  SET POWER TO MOTORS
                     //=========================================================================================
 
                     //Drive Motors:
-                    robot.setMotors(leftX1, leftY1, -rightX1);
+                    /*
+                    robot.setIndiPower(0, leftX1);
+                    robot.setIndiPower(1, leftY1);
+                    robot.setIndiPower(2, rightX1);
+                    robot.setIndiPower(3, rightY1);
+                    */
+
+                    robot.setMotors(leftX1, leftY1, rightX1);
 
                     //Linear Slides:
                     robot.manualLinearSlides(triggers_value, leftY2);
@@ -98,7 +110,6 @@ public class TeamTeleop extends LinearOpMode {
                         dropSlideState = 3;
                     }
 
-                    robot.autoDropLinearSlides(dropSlideState);
                     telemetry.addData("Drop Slide State", dropSlideState);
 
                     //Calculate RPM of Motors

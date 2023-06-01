@@ -40,6 +40,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: org.threeten:threetenbp:1.5.1" level="project" />
     <orderEntry type="library" name="Gradle: org.checkerframework:checker-qual:2.5.8" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.annotation:annotation:1.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.nanohttpd:nanohttpd-websocket:2.3.1" level="project" />
     <orderEntry type="library" name="Gradle: org.firstinspires.ftc:Inspection:8.1.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: org.firstinspires.ftc:Blocks:8.1.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: org.firstinspires.ftc:Tfod:8.1.1@aar" level="project" />
@@ -54,5 +56,6 @@
     <orderEntry type="library" name="Gradle: org.tensorflow:tensorflow-lite-support:0.2.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: org.tensorflow:tensorflow-lite:2.4.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: org.firstinspires.ftc:gameAssets-PowerPlay:1.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.acmerobotics.dashboard:dashboard:0.4.5@aar" level="project" />
   </component>
 </module>

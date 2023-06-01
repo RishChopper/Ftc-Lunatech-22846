@@ -22,7 +22,7 @@ public class TeamHardware {
     private DcMotorEx motorRightFront;
     private DcMotorEx motorLeftBack;
     private DcMotorEx motorRightBack;
-    private DcMotorEx intakeLinearSlide;
+    private DcMotorEx intakeTiltMech;
     private DcMotorEx dropLinearSlide;
     private Servo intakeClaw;
     private Servo dropClaw;
@@ -57,14 +57,44 @@ public class TeamHardware {
         motorRightFront = hardwareMap.get(DcMotorEx.class, "motorRightFront");
         motorLeftBack = hardwareMap.get(DcMotorEx.class, "motorLeftBack");
         motorRightBack = hardwareMap.get(DcMotorEx.class, "motorRightBack");
-        intakeLinearSlide = hardwareMap.get(DcMotorEx.class, "IntakeSlide");
-        dropLinearSlide = hardwareMap.get(DcMotorEx.class, "IntakeSlide");
+        intakeTiltMech = hardwareMap.get(DcMotorEx.class, "intakeSlide");
+        dropLinearSlide = hardwareMap.get(DcMotorEx.class, "dropSlide");
         intakeClaw = hardwareMap.get(Servo.class, "intakeClaw");
         dropClaw = hardwareMap.get(Servo.class, "dropClaw");
         dropClawRotate = hardwareMap.get(Servo.class, "dropClawRotate");
         intakeClaw.getController().pwmEnable();
         dropClaw.getController().pwmEnable();
         dropClawRotate.getController().pwmEnable();
+    }
+
+    public void callibrate(){
+        intakeTiltMech.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intakeTiltMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        intakeTiltMech.setPower(1.0);
+
+        dropLinearSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dropLinearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        dropLinearSlide.setPower(1.0);
+    }
+
+    public void setIndiPower(int motor, double power){
+        switch (motor){
+            case 0:
+                motorLeftFront.setPower(power);
+                break;
+
+            case 1:
+                motorRightFront.setPower(power);
+                break;
+
+            case 2:
+                motorLeftBack.setPower(power);
+                break;
+
+            case 3:
+                motorRightBack.setPower(power);
+                break;
+        }
     }
 
     /* Initialize standard Hardware interfaces */
@@ -89,15 +119,15 @@ public class TeamHardware {
         motorRightBack.setPower(0.0);
         motorRightBack.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
-        intakeLinearSlide.setDirection(DcMotorEx.Direction.FORWARD);
-        intakeLinearSlide.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        intakeLinearSlide.setPower(0.0);
-        intakeLinearSlide.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        intakeTiltMech.setDirection(DcMotorEx.Direction.FORWARD);
+        intakeTiltMech.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        intakeTiltMech.setPower(0.0);
+        intakeTiltMech.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         dropLinearSlide.setDirection(DcMotorEx.Direction.FORWARD);
         dropLinearSlide.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         dropLinearSlide.setPower(0.0);
-        dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
     }
 
     public void init_auto(LinearOpMode opmode) {
@@ -106,81 +136,81 @@ public class TeamHardware {
         motorLeftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorLeftFront.setPower(0.0);
         motorLeftFront.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        motorLeftFront.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        motorLeftFront.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
         motorRightFront.setDirection(DcMotorEx.Direction.FORWARD);
         motorLeftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorRightFront.setPower(0.0);
         motorRightFront.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        motorRightFront.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        motorRightFront.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
         motorLeftBack.setDirection(DcMotorEx.Direction.REVERSE);
         motorLeftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorLeftBack.setPower(0.0);
         motorLeftBack.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        motorLeftBack.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        motorLeftBack.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
         motorRightBack.setDirection(DcMotorEx.Direction.FORWARD);
         motorLeftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorRightBack.setPower(0.0);
         motorRightBack.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        motorRightBack.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        motorRightBack.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
-        intakeLinearSlide.setDirection(DcMotorEx.Direction.FORWARD);
-        intakeLinearSlide.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        intakeLinearSlide.setPower(0.0);
-        intakeLinearSlide.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        intakeLinearSlide.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        intakeTiltMech.setDirection(DcMotorEx.Direction.FORWARD);
+        intakeTiltMech.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        intakeTiltMech.setPower(0.0);
+        intakeTiltMech.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         dropLinearSlide.setDirection(DcMotorEx.Direction.FORWARD);
         dropLinearSlide.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         dropLinearSlide.setPower(0.0);
-        dropLinearSlide.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        dropLinearSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        callibrate();
     }
 
     public void manualLinearSlides(double madman_power, double scorpion_power){
         dropLinearSlide.setPower(madman_power);
-        intakeLinearSlide.setPower(scorpion_power);
+        intakeTiltMech.setPower(scorpion_power);
     }
 
     public void autoDropLinearSlides(int level){
         switch (level){
             case 0:
-                dropLinearSlide.setTargetPosition(-dropLinearSlide.getTargetPosition());
+                dropLinearSlide.setTargetPosition(0);
                 dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 dropLinearSlide.setPower(1);
                 break;
 
             case 1:
-                dropLinearSlide.setTargetPosition(-dropLinearSlide.getTargetPosition() + 520);
+                dropLinearSlide.setTargetPosition(1540);
                 dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 dropLinearSlide.setPower(1);
                 break;
 
             case 2:
-                dropLinearSlide.setTargetPosition(-dropLinearSlide.getTargetPosition() + 1030);
+                dropLinearSlide.setTargetPosition(2850);
                 dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 dropLinearSlide.setPower(1);
                 break;
 
             case 3:
-                dropLinearSlide.setTargetPosition(-dropLinearSlide.getTargetPosition() + 1540);
+                dropLinearSlide.setTargetPosition(4050);
                 dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 dropLinearSlide.setPower(1);
                 break;
         }
     }
 
-    public void autoIntakeLinearSlide(boolean extend){
+    public void autointakeTiltMech(boolean extend){
         if (extend){
-            dropLinearSlide.setTargetPosition(-dropLinearSlide.getTargetPosition() + 116);
-            dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-            dropLinearSlide.setPower(1);
+            intakeTiltMech.setTargetPosition(116);
+            intakeTiltMech.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            intakeTiltMech.setPower(1);
         }else{
-            dropLinearSlide.setTargetPosition(-dropLinearSlide.getTargetPosition());
-            dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-            dropLinearSlide.setPower(1);
+            intakeTiltMech.setTargetPosition(0);
+            intakeTiltMech.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            intakeTiltMech.setPower(1);
         }
     }
 
@@ -209,8 +239,8 @@ public class TeamHardware {
     public void setMotors(double x, double y, double rot)  //sets the motor speeds given an x, y and rotation value
     {
         try {
-            r = Math.hypot(x, y);
-            robotAngle = Math.atan2(y, x) - Math.PI / 4;
+            r = Math.hypot(x, y); //returns the velocity
+            robotAngle = Math.atan2(y, x) - Math.PI / 4; //returns the angle of the velocity against the x axis
 
             v1 = r * Math.cos(robotAngle) + rot;
             v2 = r * Math.sin(robotAngle) - rot;
@@ -230,15 +260,8 @@ public class TeamHardware {
     }
 
     public MotorData getMotorData(){
-        MotorData motorData = new MotorData(motorLeftFront, motorRightFront, motorLeftBack, motorRightBack, intakeLinearSlide, dropLinearSlide, intakeClaw, dropClaw, dropClawRotate);
+        MotorData motorData = new MotorData(motorLeftFront, motorRightFront, motorLeftBack, motorRightBack, intakeTiltMech, dropLinearSlide, intakeClaw, dropClaw, dropClawRotate);
         return motorData;
-    }
-
-    public int[] revEncoderDrive(int encoder_1_ticks, int encoder_2_ticks, int encoder_3_ticks){
-        int[] encoder_error = new int[3];
-
-
-        return encoder_error;
     }
 
     public void encoderDrive(double speed, DataHolder.MOVEDIR dir, double distance,
@@ -437,15 +460,6 @@ public class TeamHardware {
             RobotLog.ee("SMTECH", e, "exception in setChassisTargetPosition()");
         }
     }
-    public void stopChassisMotors(){
-        motorLeftFront.setPower(0);
-        motorRightFront.setPower(0);
-        motorLeftBack.setPower(0);
-        motorRightBack.setPower(0);
-
-        intakeLinearSlide.setPower(0);
-        dropLinearSlide.setPower(0);
-    }
 
     void stopChassis() {
         // Stop all motion;
@@ -461,7 +475,7 @@ public class TeamHardware {
             motorLeftBack.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
             motorRightBack.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-            intakeLinearSlide.setPower(0);
+            intakeTiltMech.setPower(0);
             dropLinearSlide.setPower(0);
 
             intakeClaw.getController().pwmDisable();

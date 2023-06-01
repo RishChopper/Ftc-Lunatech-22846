@@ -15,21 +15,9 @@ public class test_teleop extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        double leftX1;
-        double leftY1;
-        double leftY2;
-        double rightX1;
-
         double triggers_value;
         double rightTrigger;
         double leftTrigger;
-
-        double leftFrontRPM;
-        double rightFrontRPM;
-        double leftBackRPM;
-        double rightBackRPM;
-        double intakeLinearSlideRPM;
-        double dropLinearSlideRPM;
 
         boolean bot_mode = true;
 
@@ -46,33 +34,17 @@ public class test_teleop extends LinearOpMode {
 
         waitForStart();
         if (opModeIsActive()) {
-            // Put run blocks here.
             while (opModeIsActive()) {
-
-                //if (!gamepad1.atRest()) { // Only checks wheels & trigger
                 try {
-                    //=========================================================================================
-                    //                                      ASSIGNMENT
-                    //=========================================================================================
-                    leftX1 = Range.clip(gamepad1.left_stick_x, -1, 1);
-                    leftY1 = -Range.clip(gamepad1.left_stick_y, -1, 1);
-                    leftY2 = -Range.clip(gamepad2.left_stick_y, -1, 1);
-                    rightX1 = -Range.clip(gamepad1.right_stick_x, -1, 1);
                     rightTrigger = Range.clip(gamepad2.right_trigger, -1, 1);
                     leftTrigger = -Range.clip(gamepad2.left_trigger, -1, 1);
                     triggers_value = rightTrigger + leftTrigger;
-                    //=========================================================================================
-                    //                                      BOT MODE
-                    //=========================================================================================
+
                     if(bot_mode){
                         telemetry.addData("BOT_MODE", "Manual");
                     }else {
                         telemetry.addData("BOT_MODE", "Assisted");
                     }
-
-                    //=========================================================================================
-                    //                                  SET POWER TO MOTORS
-                    //=========================================================================================
 
                     if (bot_mode){
                         if (gamepad2.dpad_left){
@@ -129,19 +101,19 @@ public class test_teleop extends LinearOpMode {
                 break;
 
             case 1:
-                motor.setTargetPosition(1540);
+                motor.setTargetPosition(770);
                 motor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 motor.setPower(1);
                 break;
 
             case 2:
-                motor.setTargetPosition(2850);
+                motor.setTargetPosition(1425);
                 motor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 motor.setPower(1);
                 break;
 
             case 3:
-                motor.setTargetPosition(4050);
+                motor.setTargetPosition(2040);
                 motor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 motor.setPower(1);
                 break;
