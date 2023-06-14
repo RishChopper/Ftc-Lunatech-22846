@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 import org.firstinspires.ftc.teamcode.data.MotorData;
 import org.firstinspires.ftc.teamcode.data.TeamHardware;
 
+@Disabled
 @TeleOp(name = "Lunatech-TeleopTest", group = "Testers")
 public class test_teleop extends LinearOpMode {
     DcMotorEx motor;
