@@ -41,6 +41,8 @@ public class TeamHardware {
     final double POWER_MOTOR_RIGHT_BACK = 1.0;
     private double r, robotAngle, v1, v2, v3, v4;
 
+    private static boolean claw_rot_pos = false;
+
     public static final double COUNTS_PER_MOTOR_REV = 537.7; //Gobilda 5203 Motor Encoder 19.2:1	((((1+(46/17))) * (1+(46/11))) * 28)
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 3.937 ;     // For figuring circumference
@@ -214,8 +216,16 @@ public class TeamHardware {
         }
     }
 
-    public void moveClaws(boolean drop_claw_pos, boolean scorp_claw_pos){  //true = open; false = close;
+    public void moveClaws(boolean drop_claw_pos, boolean scorp_claw_pos, boolean delta_rot){  //true = open; false = close;
+        claw_rot_pos = delta_rot;
+
         try {
+            if(claw_rot_pos){
+                dropClawRotate.setPosition(0.5);
+            }else {
+                dropClawRotate.setPosition(1.0);
+            }
+
             if (drop_claw_pos){
                 dropClaw.getController().pwmEnable();
                 dropClaw.setPosition(0.2);

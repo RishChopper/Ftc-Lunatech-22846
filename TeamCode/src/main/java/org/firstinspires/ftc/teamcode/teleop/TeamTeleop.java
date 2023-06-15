@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.util.RobotLog;
 
+import org.firstinspires.ftc.teamcode.data.DataHolder;
 import org.firstinspires.ftc.teamcode.data.MotorData;
 import org.firstinspires.ftc.teamcode.data.TeamHardware;
 
@@ -42,57 +43,36 @@ public class TeamTeleop extends LinearOpMode {
 
         waitForStart();
         if (opModeIsActive()) {
-            // Put run blocks here.
             while (opModeIsActive()) {
-
-                //if (!gamepad1.atRest()) { // Only checks wheels & trigger
                 try {
-                    //=========================================================================================
-                    //                                      ASSIGNMENT
-                    //=========================================================================================
                     leftX1 = Range.clip(gamepad1.left_stick_x, -1, 1);
                     leftY1 = -Range.clip(gamepad1.left_stick_y, -1, 1);
                     leftY2 = -Range.clip(gamepad2.left_stick_y, -1, 1);
                     rightX1 = Range.clip(gamepad1.right_stick_x, -1, 1);
                     rightY1 = -Range.clip(gamepad1.right_stick_y, -1, 1);
 
+                    if(leftX1 < DataHolder.JoyL1_Deadzone){
+                        leftX1 = 0;
+                    }
+                    if(leftY1 < DataHolder.JoyL1_Deadzone){
+                        leftY1 = 0;
+                    }
+                    if(rightX1 < DataHolder.JoyR1_Deadzone){
+                        rightX1 = 0;
+                    }
+                    if(rightY1 < DataHolder.JoyR1_Deadzone){
+                        rightY1 = 0;
+                    }
+
                     rightTrigger = Range.clip(gamepad2.right_trigger, -1, 1);
                     leftTrigger = -Range.clip(gamepad2.left_trigger, -1, 1);
                     triggers_value = rightTrigger + leftTrigger;
-                    //=========================================================================================
-                    //                                      BOT MODE
-                    //=========================================================================================
-                    /*
-                    if(bot_mode){
-                        telemetry.addData("BOT_MODE", "Madman");
-                    }else {
-                        telemetry.addData("BOT_MODE", "Scorpion");
-                    }
-                    
-                    if (gamepad2.dpad_left){
-                        bot_mode = false;
-                    } else if (gamepad2.dpad_right) {
-                        bot_mode = true;
-                    }
-                    */
-                    //=========================================================================================
-                    //                                  SET POWER TO MOTORS
-                    //=========================================================================================
-
-                    //Drive Motors:
-                    /*
-                    robot.setIndiPower(0, leftX1);
-                    robot.setIndiPower(1, leftY1);
-                    robot.setIndiPower(2, rightX1);
-                    robot.setIndiPower(3, rightY1);
-                    */
 
                     robot.setMotors(leftX1, leftY1, rightX1);
 
-                    //Linear Slides:
                     robot.manualLinearSlides(triggers_value, leftY2);
-                    //Claws:
-                    robot.moveClaws(gamepad2.a, gamepad2.b);
+
+                    robot.moveClaws(gamepad2.a, gamepad2.b, gamepad2.x);
 
                     if (System.currentTimeMillis() - last_t >= 500) {
                         if(gamepad2.left_bumper){
@@ -110,22 +90,19 @@ public class TeamTeleop extends LinearOpMode {
                         dropSlideState = 3;
                     }
 
-                    telemetry.addData("Drop Slide State", dropSlideState);
+                    telemetry.addData("Auto Drop Slide State", dropSlideState);
 
                     //Calculate RPM of Motors
-                    leftBackRPM = motorData.getBackLeft().getVelocity();
+                    //leftBackRPM = motorData.getBackLeft().getVelocity();
                     //That returned in ticks per second
-                    leftBackRPM = (leftBackRPM / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
+                    //leftBackRPM = (leftBackRPM / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
                     //And now it's in RPM
-                    rightBackRPM = (motorData.getBackRight().getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
-                    leftFrontRPM = (motorData.getFrontLeft().getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
-                    rightFrontRPM = (motorData.getFrontRight().getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
                     intakeLinearSlideRPM = (motorData.getintakeLinearSlide().getVelocity() / 288) * 60;
                     dropLinearSlideRPM = (motorData.getdropLinearSlide().getVelocity() / 288) * 60;
 
                     //telemetry is the screen with debug info in Driver Station
                     //telemetry.addData("GAMEPAD1", "Front %f,  Right %f, Turn %f", leftY1, leftX1, rightX1);
-                    telemetry.addData("RPM", "LEFTFRONT %f, RIGHTRONT %f, LEFTBACK %f, RIGHTBACK %f", leftFrontRPM, rightFrontRPM, leftBackRPM, rightBackRPM);
+                    //telemetry.addData("RPM", "LEFTFRONT %f, RIGHTRONT %f, LEFTBACK %f, RIGHTBACK %f", leftFrontRPM, rightFrontRPM, leftBackRPM, rightBackRPM);
                     telemetry.addData("RPM", "intakeLinearSlide %f, dropLinearSlide %f", intakeLinearSlideRPM, dropLinearSlideRPM);
                     telemetry.update();
                 }catch(Exception e){

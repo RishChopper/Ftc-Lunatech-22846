@@ -3,6 +3,8 @@ public class DataHolder
 {
             public static final double ONE_BLOCK = -26.50;
             private static int slideState = 0;
+            public static final double JoyL1_Deadzone = 0.2;
+            public static final double JoyR1_Deadzone = 0.2;
     public enum MOVEDIR
     {
         UNKNOWN,
