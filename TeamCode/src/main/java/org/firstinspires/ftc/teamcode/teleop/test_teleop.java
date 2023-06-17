@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.util.RobotLog;
 
@@ -14,10 +15,11 @@ import org.firstinspires.ftc.teamcode.data.TeamHardware;
 @TeleOp(name = "Lunatech-TeleopTest", group = "Testers")
 public class test_teleop extends LinearOpMode {
     DcMotorEx motor;
+    Servo servo;
 
     @Override
     public void runOpMode() {
-        double triggers_value;
+        /*double triggers_value;
         double rightTrigger;
         double leftTrigger;
 
@@ -32,12 +34,13 @@ public class test_teleop extends LinearOpMode {
         motor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motor.setPower(0.0);
         motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);*/
+        servo = hardwareMap.get(Servo.class, "servo");
 
         waitForStart();
         if (opModeIsActive()) {
             while (opModeIsActive()) {
-                try {
+                try {/*
                     rightTrigger = Range.clip(gamepad2.right_trigger, -1, 1);
                     leftTrigger = -Range.clip(gamepad2.left_trigger, -1, 1);
                     triggers_value = rightTrigger + leftTrigger;
@@ -83,7 +86,7 @@ public class test_teleop extends LinearOpMode {
 
                         telemetry.addData("Drop Slide State", dropSlideState);
                     }
-                    telemetry.update();
+                    telemetry.update();*/
                 }catch(Exception e){
                     telemetry.addData("TELEOP 1:", "%s", e.toString());
                     telemetry.update();

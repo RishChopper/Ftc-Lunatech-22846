@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.LightBlinker;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoController;
+import com.qualcomm.robotcore.hardware.ServoControllerEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 
@@ -64,9 +66,9 @@ public class TeamHardware {
         intakeClaw = hardwareMap.get(Servo.class, "intakeClaw");
         dropClaw = hardwareMap.get(Servo.class, "dropClaw");
         dropClawRotate = hardwareMap.get(Servo.class, "dropClawRotate");
-        intakeClaw.getController().pwmEnable();
-        dropClaw.getController().pwmEnable();
-        dropClawRotate.getController().pwmEnable();
+        //intakeClaw.getController().pwmEnable();
+        //dropClaw.getController().pwmEnable();
+        //dropClawRotate.getController().pwmEnable();
     }
 
     public void callibrate(){
@@ -172,6 +174,9 @@ public class TeamHardware {
     }
 
     public void manualLinearSlides(double madman_power, double scorpion_power){
+        if(madman_power <=0.2 && madman_power >= -0.2){
+            //madman_power = 0.01;
+        }
         dropLinearSlide.setPower(madman_power);
         intakeTiltMech.setPower(scorpion_power);
     }
@@ -216,19 +221,23 @@ public class TeamHardware {
         }
     }
 
-    public void moveClaws(boolean drop_claw_pos, boolean scorp_claw_pos, boolean delta_rot){  //true = open; false = close;
+    public void moveClaws(String bot_mode, boolean drop_claw_pos, boolean scorp_claw_pos, boolean delta_rot){  //true = open; false = close;
         claw_rot_pos = delta_rot;
 
         try {
             if(claw_rot_pos){
-                dropClawRotate.setPosition(0.5);
+                dropClawRotate.setPosition(0.7);
             }else {
-                dropClawRotate.setPosition(1.0);
+                dropClawRotate.setPosition(0.05);
             }
 
             if (drop_claw_pos){
                 dropClaw.getController().pwmEnable();
-                dropClaw.setPosition(0.2);
+                if (bot_mode.equals("Scorpion")){
+                    dropClaw.setPosition(0.4);
+                }else {
+                    dropClaw.setPosition(0.43);
+                }
             }else{
                 dropClaw.getController().pwmDisable();
             }

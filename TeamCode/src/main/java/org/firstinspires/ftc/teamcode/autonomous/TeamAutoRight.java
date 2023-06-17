@@ -42,7 +42,7 @@ public class TeamAutoRight extends LinearOpMode {
         signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry, 5000);
         signalSleeveDetector.init();
         robot.init_auto(this);
-        robot.moveClaws(false, false);
+        robot.moveClaws("Madman", false, false, false);
 
         waitForStart();
 

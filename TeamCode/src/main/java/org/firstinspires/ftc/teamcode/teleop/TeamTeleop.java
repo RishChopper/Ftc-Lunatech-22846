@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.util.RobotLog;
 
@@ -16,6 +17,7 @@ public class TeamTeleop extends LinearOpMode {
         double leftX1;
         double leftY1;
         double leftY2;
+        double rightX2;
         double rightX1;
         double rightY1;
 
@@ -23,21 +25,25 @@ public class TeamTeleop extends LinearOpMode {
         double rightTrigger;
         double leftTrigger;
 
-        double leftFrontRPM;
-        double rightFrontRPM;
-        double leftBackRPM;
-        double rightBackRPM;
         double intakeLinearSlideRPM;
         double dropLinearSlideRPM;
 
-        boolean bot_mode = true;
+        String botmode = "Madman";
 
         long last_t = System.currentTimeMillis()/1000;
 
         int dropSlideState = 0;
 
+        Servo intakeClaw;
+        Servo dropClaw;
+        Servo dropClawRotate;
+
         TeamHardware robot = new TeamHardware(hardwareMap, telemetry, this);
         MotorData motorData = robot.getMotorData();
+
+        intakeClaw = hardwareMap.get(Servo.class, "intakeClaw");
+        dropClaw = hardwareMap.get(Servo.class, "dropClaw");
+        dropClawRotate = hardwareMap.get(Servo.class, "dropClawRotate");
 
         robot.init_teleop();
 
@@ -49,30 +55,44 @@ public class TeamTeleop extends LinearOpMode {
                     leftY1 = -Range.clip(gamepad1.left_stick_y, -1, 1);
                     leftY2 = -Range.clip(gamepad2.left_stick_y, -1, 1);
                     rightX1 = Range.clip(gamepad1.right_stick_x, -1, 1);
+                    rightX2 = Range.clip(gamepad2.right_stick_x, -1, 1);
                     rightY1 = -Range.clip(gamepad1.right_stick_y, -1, 1);
-
-                    if(leftX1 < DataHolder.JoyL1_Deadzone){
-                        leftX1 = 0;
-                    }
-                    if(leftY1 < DataHolder.JoyL1_Deadzone){
-                        leftY1 = 0;
-                    }
-                    if(rightX1 < DataHolder.JoyR1_Deadzone){
-                        rightX1 = 0;
-                    }
-                    if(rightY1 < DataHolder.JoyR1_Deadzone){
-                        rightY1 = 0;
-                    }
 
                     rightTrigger = Range.clip(gamepad2.right_trigger, -1, 1);
                     leftTrigger = -Range.clip(gamepad2.left_trigger, -1, 1);
                     triggers_value = rightTrigger + leftTrigger;
 
+                    if (rightX2 >= 0.4){
+                        botmode = "Madman";
+                    }else if(rightX2 <= -0.4){
+                        botmode = "Scorpion";
+                    }
+                    telemetry.addData("Botmode: ", botmode);
+
+                    if(gamepad2.a) {
+                        if (botmode.equals("Madman")){
+                            dropClaw.setPosition(0.4);//Madman drop_claw measurement
+                        }else if(botmode.equals("Scorpion")){
+                            dropClaw.setPosition(0.43);
+                            gamepad2.rumble(200);
+                        }
+                    }else if (gamepad2.b){
+                        dropClaw.setPosition(0.47);
+                    }
+                    if (gamepad2.x){
+                        intakeClaw.setPosition(1);
+                    }else if(gamepad2.y){
+                        intakeClaw.setPosition(0);
+                    }
+                    if(gamepad2.dpad_down) {
+                        dropClawRotate.setPosition(0.9);//Madman drop_claw measurement
+                    }if (gamepad2.dpad_up){
+                        dropClawRotate.setPosition(0.2);
+                    }
+
                     robot.setMotors(leftX1, leftY1, rightX1);
 
-                    robot.manualLinearSlides(triggers_value, leftY2);
-
-                    robot.moveClaws(gamepad2.a, gamepad2.b, gamepad2.x);
+                    robot.manualLinearSlides(triggers_value, leftY2/10);
 
                     if (System.currentTimeMillis() - last_t >= 500) {
                         if(gamepad2.left_bumper){

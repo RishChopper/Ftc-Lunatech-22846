@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.data.TeamHardware;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.teamcode.data.TeamHardware;
 public class motor_test extends LinearOpMode {
 
     private DcMotorEx motor;
+    private Servo servo;
     private TouchSensor limitSwitch;
     private SignalSleeveDetectorMain signalSleeveDetector;
     int signal_sleeve = 0;
@@ -22,12 +24,28 @@ public class motor_test extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         motor = hardwareMap.get(DcMotorEx.class, "motor");
         limitSwitch = hardwareMap.get(TouchSensor.class, "limit_switch");
+        servo = hardwareMap.get(Servo.class, "servo");
+
+        waitForStart();
+
+        while (opModeIsActive()){
+            //servo.getController().pwmEnable();
+            //servo.setPosition(0.43); //Scorpion transfer-drop_claw measurement
+            if(gamepad2.a) {
+                servo.getController().pwmEnable();
+                servo.setPosition(0.4);//Madman drop_claw measurement
+            }if (gamepad2.b){
+                servo.getController().pwmDisable();
+            }
+            //servo.getController().pwmDisable();
+            //sleep(10000);
+        }
 
 //        motor.setDirection(DcMotorEx.Direction.FORWARD);
 //        motor.setPower(0);
 //        motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 //        motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry, 5000);
+        /*signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry, 5000);
         signalSleeveDetector.init();
 
         motor.setDirection(DcMotorEx.Direction.FORWARD);
@@ -60,6 +78,6 @@ public class motor_test extends LinearOpMode {
                 telemetry.addData("RPM: ", (motor.getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60);
                 telemetry.update();
             }
-        }
+        }*/
     }
 }
