@@ -32,20 +32,30 @@ public class TeamAutoLeft extends LinearOpMode {
             //signal_sleeve = signalSleeveDetector.getDetected_tag();
             telemetry.addData("Signal Sleeve: ", "%s", String.valueOf((signal_sleeve)));
             telemetry.update();
+            /** Procedure:
+             * 1) Raise slide to intake pos
+             * 2) flip drop grabber and open
+             * 3) Pickup cone thru intake grabby
+             * 4) Move Intake grabby over
+             * 5) Engage drop grabby and release intake grabby
+             * 6) Rotate drop grabby and Move intake grabby bak at the same time
+             * 7) Drop cone
+             * Repeat
+             */
 
-            //robot.autoLinearSlides("up");
-            robot.encoderDrive(0.5, DataHolder.MOVEDIR.RIGHT, -3, 5);
-            robot.encoderDrive(0.5, DataHolder.MOVEDIR.FRONT, -65, 5);
-            robot.encoderDrive(0.5, DataHolder.MOVEDIR.RIGHT, -14, 5);
-            robot.encoderDrive(0.5, DataHolder.MOVEDIR.FRONT, -2, 5);
-            //robot.autoLinearSlides("down");
-            //drop pre-loaded cone
-            //robot.moveClaw(1);
-            sleep(500);
+            //1
+            robot.autoDropLinearSlides(4);
+            robot.autointakeTiltMech(true, 3);
+            //2
+            robot.moveClaws("Scorpion", true, true, false);
+            //3
+            robot.moveClaws("Scorpion", true, false, false);
+            //4
+            robot.autointakeTiltMech(false, 0);
+            //5
+            robot.moveClaws("Scorpion", false, true, true);
 
-            robot.encoderDrive(0.5, DataHolder.MOVEDIR.BACK, -6, 5);
-
-            switch(signal_sleeve){
+            /*switch(signal_sleeve){
                 case 1:
                     robot.encoderDrive(0.5, DataHolder.MOVEDIR.LEFT, -34, 5);
                     break;
@@ -58,7 +68,7 @@ public class TeamAutoLeft extends LinearOpMode {
                     //GO TO SPOT 2
                     robot.encoderDrive(0.5, DataHolder.MOVEDIR.LEFT, -10, 5);
                     break;
-            }
+            }*/
 
 
             //AUTONOMOUS ENDS

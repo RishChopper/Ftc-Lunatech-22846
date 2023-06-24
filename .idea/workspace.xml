@@ -9,14 +9,13 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1221b94a-baa3-40c0-9e40-c3349514b368" name="Changes" comment="15/6/23&#10;Teleop Updates">
+    <list default="true" id="1221b94a-baa3-40c0-9e40-c3349514b368" name="Changes" comment="18/6/23&#10;Teleop Updates: Claw support added">
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/autonomous/TeamAutoRight.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/autonomous/TeamAutoRight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/autonomous/TeamAutoLeft.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/autonomous/TeamAutoLeft.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/autonomous/motor_test.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/autonomous/motor_test.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/data/TeamHardware.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/data/TeamHardware.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/teleop/TeamTeleop.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/teleop/TeamTeleop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/teleop/test_teleop.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/teleop/test_teleop.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -402,7 +401,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686837353573</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="18/6/23&#10;Teleop Updates: Claw support added">
+      <created>1687034122078</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1687034122078</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -454,7 +460,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added Linear Slide Control to gamepad1. Added ServoTest.java . Updated TeamHardware.java" />
     <MESSAGE value="Converted to DcMotorEx and Set RPM Readout of motors in TeleOp&#10;Added Camera Basic Program with Vuforia Key" />
     <MESSAGE value="Created The Main Autonomous Template Class for Red Alliance Left Side starting pos.&#10;Created Place Holder class for April Tag Detection- TO BE REPLACED BY ACTUAL VUFORIA/TENSORFLOW SYSTEM&#10;Added value of 1 grid square's dimension in DataHolder.java&#10;Minor Changes to TeamTeleop.java" />
     <MESSAGE value="28/01/23" />
@@ -479,6 +484,7 @@
     <MESSAGE value="RoadRunner Installation Complete&#10;To begin with: Tuning" />
     <MESSAGE value="14-06-23&#10;First Tuning begun" />
     <MESSAGE value="15/6/23&#10;Teleop Updates" />
-    <option name="LAST_COMMIT_MESSAGE" value="15/6/23&#10;Teleop Updates" />
+    <MESSAGE value="18/6/23&#10;Teleop Updates: Claw support added" />
+    <option name="LAST_COMMIT_MESSAGE" value="18/6/23&#10;Teleop Updates: Claw support added" />
   </component>
 </project>

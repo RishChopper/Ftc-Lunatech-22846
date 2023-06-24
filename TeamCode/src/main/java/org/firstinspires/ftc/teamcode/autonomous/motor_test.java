@@ -15,69 +15,20 @@ import org.firstinspires.ftc.teamcode.data.TeamHardware;
 public class motor_test extends LinearOpMode {
 
     private DcMotorEx motor;
-    private Servo servo;
-    private TouchSensor limitSwitch;
-    private SignalSleeveDetectorMain signalSleeveDetector;
-    int signal_sleeve = 0;
+    private TeamHardware robot;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        motor = hardwareMap.get(DcMotorEx.class, "motor");
-        limitSwitch = hardwareMap.get(TouchSensor.class, "limit_switch");
-        servo = hardwareMap.get(Servo.class, "servo");
-
         waitForStart();
 
         while (opModeIsActive()){
-            //servo.getController().pwmEnable();
-            //servo.setPosition(0.43); //Scorpion transfer-drop_claw measurement
-            if(gamepad2.a) {
-                servo.getController().pwmEnable();
-                servo.setPosition(0.4);//Madman drop_claw measurement
-            }if (gamepad2.b){
-                servo.getController().pwmDisable();
-            }
-            //servo.getController().pwmDisable();
-            //sleep(10000);
-        }
+            robot = new TeamHardware(hardwareMap, telemetry, this);
 
-//        motor.setDirection(DcMotorEx.Direction.FORWARD);
-//        motor.setPower(0);
-//        motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-//        motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        /*signalSleeveDetector = new SignalSleeveDetectorMain(hardwareMap, telemetry, 5000);
-        signalSleeveDetector.init();
+            motor = robot.getIntakeTiltMech();
+            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        motor.setDirection(DcMotorEx.Direction.FORWARD);
-        motor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        motor.setPower(0.0);
-        motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        motor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-
-        while (opModeInInit()){
-            telemetry.addData("Encoder: ", motor.getCurrentPosition());
-            telemetry.addData("Limit Switch State: ", limitSwitch.isPressed());
+            telemetry.addData("Encoder: Tilt Mech", motor.getCurrentPosition());
             telemetry.update();
         }
-
-        // Wait for the game to start (driver presses PLAY)
-        waitForStart();
-        if (opModeIsActive()) {
-            while (opModeIsActive()) {
-                //motor.setPower(1);
-                //telemetry.addData("Velocity Calc: ", (314 * TeamHardware.COUNTS_PER_MOTOR_REV) / 60);
-
-                //signal_sleeve = signalSleeveDetector.getDetected_tag();
-                //telemetry.addData("APRIL TAG Signal Sleeve: ", "%s", String.valueOf((signal_sleeve)));
-                //telemetry.update();
-
-                motor.setPower(1.0);
-                motor.setTargetPosition(2040);
-
-                telemetry.addData("Actual Velocity: ", motor.getVelocity());
-                telemetry.addData("RPM: ", (motor.getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60);
-                telemetry.update();
-            }
-        }*/
     }
 }

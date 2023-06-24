@@ -25,6 +25,11 @@ public class TeamTeleop extends LinearOpMode {
         double rightTrigger;
         double leftTrigger;
 
+        double leftFrontRPM;
+        double rightFrontRPM;
+        double leftBackRPM;
+        double rightBackRPM;
+
         double intakeLinearSlideRPM;
         double dropLinearSlideRPM;
 
@@ -80,9 +85,9 @@ public class TeamTeleop extends LinearOpMode {
                         dropClaw.setPosition(0.47);
                     }
                     if (gamepad2.x){
-                        intakeClaw.setPosition(1);
+                        intakeClaw.setPosition(0.52);
                     }else if(gamepad2.y){
-                        intakeClaw.setPosition(0);
+                        intakeClaw.setPosition(0.42);
                     }
                     if(gamepad2.dpad_down) {
                         dropClawRotate.setPosition(0.9);//Madman drop_claw measurement
@@ -111,18 +116,20 @@ public class TeamTeleop extends LinearOpMode {
                     }
 
                     telemetry.addData("Auto Drop Slide State", dropSlideState);
-
-                    //Calculate RPM of Motors
-                    //leftBackRPM = motorData.getBackLeft().getVelocity();
-                    //That returned in ticks per second
-                    //leftBackRPM = (leftBackRPM / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
-                    //And now it's in RPM
                     intakeLinearSlideRPM = (motorData.getintakeLinearSlide().getVelocity() / 288) * 60;
-                    dropLinearSlideRPM = (motorData.getdropLinearSlide().getVelocity() / 288) * 60;
+                    dropLinearSlideRPM = (motorData.getdropLinearSlide().getVelocity() / 537.6) * 60;
+                    //Calculate RPM of Motors
+                    leftBackRPM = motorData.getBackLeft().getVelocity();
+                    //That returned in ticks per second
+                    leftBackRPM = (leftBackRPM / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
+                    //And now it's in RPM
+                    rightBackRPM = (motorData.getBackRight().getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
+                    leftFrontRPM = (motorData.getFrontLeft().getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
+                    rightFrontRPM = (motorData.getFrontRight().getVelocity() / TeamHardware.COUNTS_PER_MOTOR_REV) * 60;
 
                     //telemetry is the screen with debug info in Driver Station
                     //telemetry.addData("GAMEPAD1", "Front %f,  Right %f, Turn %f", leftY1, leftX1, rightX1);
-                    //telemetry.addData("RPM", "LEFTFRONT %f, RIGHTRONT %f, LEFTBACK %f, RIGHTBACK %f", leftFrontRPM, rightFrontRPM, leftBackRPM, rightBackRPM);
+                    telemetry.addData("RPM", "LEFTFRONT %f, RIGHTRONT %f, LEFTBACK %f, RIGHTBACK %f", leftFrontRPM, rightFrontRPM, leftBackRPM, rightBackRPM);
                     telemetry.addData("RPM", "intakeLinearSlide %f, dropLinearSlide %f", intakeLinearSlideRPM, dropLinearSlideRPM);
                     telemetry.update();
                 }catch(Exception e){

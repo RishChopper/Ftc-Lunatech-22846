@@ -26,6 +26,7 @@ public class TeamHardware {
     private DcMotorEx motorRightBack;
     private DcMotorEx intakeTiltMech;
     private DcMotorEx dropLinearSlide;
+    private DcMotorEx mfrontright, mbackright;
     private Servo intakeClaw;
     private Servo dropClaw;
     private Servo dropClawRotate;
@@ -35,12 +36,16 @@ public class TeamHardware {
 
     private LinearOpMode myOpMode = null;
 
-    final double POWER_CHASSIS = 1.0;
+    final double POWER_CHASSIS = 0.7;
     final double POWER_DRIVE_MOTORS = 1.0;
-    final double POWER_MOTOR_LEFT_FRONT = 1.0;
-    final double POWER_MOTOR_LEFT_BACK = 1.0;
-    final double POWER_MOTOR_RIGHT_FRONT = 1.0;
-    final double POWER_MOTOR_RIGHT_BACK = 1.0;
+    final double leftMul = 1.0;
+    final double rightMul = 1.0;
+    final double backMul = 1.0;
+    final double frontMul = 1.0;
+    final double POWER_MOTOR_LEFT_FRONT = 165.0/155.0;
+    final double POWER_MOTOR_LEFT_BACK = 147.29/155.0;
+    final double POWER_MOTOR_RIGHT_FRONT = 150.0/155.0;
+    final double POWER_MOTOR_RIGHT_BACK = 145.06/155.0;
     private double r, robotAngle, v1, v2, v3, v4;
 
     private static boolean claw_rot_pos = false;
@@ -61,6 +66,8 @@ public class TeamHardware {
         motorRightFront = hardwareMap.get(DcMotorEx.class, "motorRightFront");
         motorLeftBack = hardwareMap.get(DcMotorEx.class, "motorLeftBack");
         motorRightBack = hardwareMap.get(DcMotorEx.class, "motorRightBack");
+        mfrontright = hardwareMap.get(DcMotorEx.class, "mfrontright");
+        mbackright = hardwareMap.get(DcMotorEx.class, "mbackright");
         intakeTiltMech = hardwareMap.get(DcMotorEx.class, "intakeSlide");
         dropLinearSlide = hardwareMap.get(DcMotorEx.class, "dropSlide");
         intakeClaw = hardwareMap.get(Servo.class, "intakeClaw");
@@ -206,11 +213,35 @@ public class TeamHardware {
                 dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 dropLinearSlide.setPower(1);
                 break;
+
+            case 4:
+                dropLinearSlide.setTargetPosition(100);
+                dropLinearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                dropLinearSlide.setPower(1);
         }
     }
 
-    public void autointakeTiltMech(boolean extend){
+    public void autointakeTiltMech(boolean extend, int ext_pos){
         if (extend){
+            switch (ext_pos){
+                case 3:
+                    intakeTiltMech.setTargetPosition(130);
+                    intakeTiltMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    intakeTiltMech.setPower(0.5);
+                    break;
+
+                case 2:
+                    intakeTiltMech.setTargetPosition(140);
+                    intakeTiltMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    intakeTiltMech.setPower(0.5);
+                    break;
+
+                case 1:
+                    intakeTiltMech.setTargetPosition(145);
+                    intakeTiltMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    intakeTiltMech.setPower(0.5);
+                    break;
+            }
             intakeTiltMech.setTargetPosition(116);
             intakeTiltMech.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
             intakeTiltMech.setPower(1);
@@ -219,6 +250,10 @@ public class TeamHardware {
             intakeTiltMech.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
             intakeTiltMech.setPower(1);
         }
+    }
+
+    public DcMotorEx getIntakeTiltMech(){
+        return intakeTiltMech;
     }
 
     public void moveClaws(String bot_mode, boolean drop_claw_pos, boolean scorp_claw_pos, boolean delta_rot){  //true = open; false = close;
@@ -266,10 +301,10 @@ public class TeamHardware {
             v3 = r * Math.sin(robotAngle) + rot;
             v4 = r * Math.cos(robotAngle) - rot;
 
-            motorLeftFront.setPower(v1 * POWER_CHASSIS * POWER_DRIVE_MOTORS * POWER_MOTOR_LEFT_FRONT);
-            motorRightFront.setPower(v2 * POWER_CHASSIS * POWER_DRIVE_MOTORS * POWER_MOTOR_RIGHT_FRONT);
-            motorLeftBack.setPower(v3 * POWER_CHASSIS * POWER_DRIVE_MOTORS * POWER_MOTOR_LEFT_BACK);
-            motorRightBack.setPower(v4 * POWER_CHASSIS * POWER_DRIVE_MOTORS * POWER_MOTOR_RIGHT_BACK);
+            motorLeftFront.setPower(v1 * POWER_CHASSIS * POWER_DRIVE_MOTORS / POWER_MOTOR_LEFT_FRONT);
+            motorRightFront.setPower(v2 * POWER_CHASSIS * POWER_DRIVE_MOTORS / POWER_MOTOR_RIGHT_FRONT);
+            motorLeftBack.setPower(v3 * POWER_CHASSIS * POWER_DRIVE_MOTORS / POWER_MOTOR_LEFT_BACK);
+            motorRightBack.setPower(v4 * POWER_CHASSIS * POWER_DRIVE_MOTORS / POWER_MOTOR_RIGHT_BACK);
         }
         catch(Exception e){
             telemetry.addData("setMotors", "%s", e.toString());
@@ -279,7 +314,7 @@ public class TeamHardware {
     }
 
     public MotorData getMotorData(){
-        MotorData motorData = new MotorData(motorLeftFront, motorRightFront, motorLeftBack, motorRightBack, intakeTiltMech, dropLinearSlide, intakeClaw, dropClaw, dropClawRotate);
+        MotorData motorData = new MotorData(dropLinearSlide, mfrontright, intakeTiltMech, mbackright, intakeTiltMech, dropLinearSlide, intakeClaw, dropClaw, dropClawRotate);
         return motorData;
     }
 
