@@ -29,6 +29,8 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.data.DataHolder;
+import org.firstinspires.ftc.teamcode.data.TeamHardware;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
@@ -55,10 +57,10 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(1, 0, 0);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(2.5, 0, 0.02);
 
-    public static double LATERAL_MULTIPLIER = 1;
+    public static double LATERAL_MULTIPLIER = 60.0/48.0;
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -279,10 +281,10 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     @Override
     public void setMotorPowers(double v, double v1, double v2, double v3) {
-        leftFront.setPower(v);
-        leftRear.setPower(v1);
-        rightRear.setPower(v2);
-        rightFront.setPower(v3);
+        leftFront.setPower(v / TeamHardware.POWER_MOTOR_LEFT_FRONT);
+        leftRear.setPower(v1 / TeamHardware.POWER_MOTOR_LEFT_BACK);
+        rightRear.setPower(v2 / TeamHardware.POWER_MOTOR_RIGHT_BACK);
+        rightFront.setPower(v3 / TeamHardware.POWER_MOTOR_RIGHT_FRONT);
     }
 
     @Override

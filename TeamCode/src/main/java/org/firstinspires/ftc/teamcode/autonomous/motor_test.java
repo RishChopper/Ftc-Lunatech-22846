@@ -19,14 +19,14 @@ public class motor_test extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        robot = new TeamHardware(hardwareMap, telemetry, this);
+        motor = robot.getIntakeTiltMech();
+
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         waitForStart();
 
         while (opModeIsActive()){
-            robot = new TeamHardware(hardwareMap, telemetry, this);
-
-            motor = robot.getIntakeTiltMech();
-            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
             telemetry.addData("Encoder: Tilt Mech", motor.getCurrentPosition());
             telemetry.update();
         }

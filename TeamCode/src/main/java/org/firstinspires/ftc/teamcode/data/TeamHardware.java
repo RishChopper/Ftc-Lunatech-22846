@@ -36,19 +36,19 @@ public class TeamHardware {
 
     private LinearOpMode myOpMode = null;
 
-    final double POWER_CHASSIS = 0.7;
+    final double POWER_CHASSIS = 0.85;
     final double POWER_DRIVE_MOTORS = 1.0;
     final double leftMul = 1.0;
     final double rightMul = 1.0;
     final double backMul = 1.0;
     final double frontMul = 1.0;
-    final double POWER_MOTOR_LEFT_FRONT = 165.0/155.0;
-    final double POWER_MOTOR_LEFT_BACK = 147.29/155.0;
-    final double POWER_MOTOR_RIGHT_FRONT = 150.0/155.0;
-    final double POWER_MOTOR_RIGHT_BACK = 145.06/155.0;
+    public static final double POWER_MOTOR_LEFT_FRONT = 1.0;
+    public static final double POWER_MOTOR_LEFT_BACK = 1.0;
+    public static final double POWER_MOTOR_RIGHT_FRONT = 1.0;
+    public static final double POWER_MOTOR_RIGHT_BACK = 1.0;
     private double r, robotAngle, v1, v2, v3, v4;
 
-    private static boolean claw_rot_pos = false;
+    private static String claw_rot_pos = "Contract";
 
     public static final double COUNTS_PER_MOTOR_REV = 537.7; //Gobilda 5203 Motor Encoder 19.2:1	((((1+(46/17))) * (1+(46/11))) * 28)
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
@@ -80,10 +80,12 @@ public class TeamHardware {
 
     public void callibrate(){
         intakeTiltMech.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intakeTiltMech.setTargetPosition(0);
         intakeTiltMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeTiltMech.setPower(1.0);
 
         dropLinearSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dropLinearSlide.setTargetPosition(0);
         dropLinearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dropLinearSlide.setPower(1.0);
     }
@@ -91,19 +93,19 @@ public class TeamHardware {
     public void setIndiPower(int motor, double power){
         switch (motor){
             case 0:
-                motorLeftFront.setPower(power);
+                motorLeftFront.setPower(power / POWER_MOTOR_LEFT_FRONT);
                 break;
 
             case 1:
-                motorRightFront.setPower(power);
+                motorRightFront.setPower(power / POWER_MOTOR_RIGHT_FRONT);
                 break;
 
             case 2:
-                motorLeftBack.setPower(power);
+                motorLeftBack.setPower(power / POWER_MOTOR_LEFT_BACK);
                 break;
 
             case 3:
-                motorRightBack.setPower(power);
+                motorRightBack.setPower(power / POWER_MOTOR_RIGHT_BACK);
                 break;
         }
     }
@@ -136,6 +138,7 @@ public class TeamHardware {
         intakeTiltMech.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         dropLinearSlide.setDirection(DcMotorEx.Direction.FORWARD);
+        dropLinearSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dropLinearSlide.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         dropLinearSlide.setPower(0.0);
         dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -188,6 +191,10 @@ public class TeamHardware {
         intakeTiltMech.setPower(scorpion_power);
     }
 
+    public DcMotorEx getDropLinearSlide() {
+        return dropLinearSlide;
+    }
+
     public void autoDropLinearSlides(int level){
         switch (level){
             case 0:
@@ -197,91 +204,109 @@ public class TeamHardware {
                 break;
 
             case 1:
-                dropLinearSlide.setTargetPosition(1540);
+                dropLinearSlide.setTargetPosition(900);
                 dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 dropLinearSlide.setPower(1);
                 break;
 
             case 2:
-                dropLinearSlide.setTargetPosition(2850);
+                dropLinearSlide.setTargetPosition(1410);
                 dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 dropLinearSlide.setPower(1);
                 break;
 
             case 3:
-                dropLinearSlide.setTargetPosition(4050);
+                dropLinearSlide.setTargetPosition(2080);
                 dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 dropLinearSlide.setPower(1);
                 break;
-
-            case 4:
-                dropLinearSlide.setTargetPosition(100);
-                dropLinearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                dropLinearSlide.setPower(1);
         }
     }
 
-    public void autointakeTiltMech(boolean extend, int ext_pos){
+    public boolean autointakeTiltMech(boolean extend, int ext_pos){
+        boolean ready = false;
+
         if (extend){
             switch (ext_pos){
                 case 3:
-                    intakeTiltMech.setTargetPosition(130);
-                    intakeTiltMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    intakeTiltMech.setPower(0.5);
+                    if (intakeTiltMech.getCurrentPosition() < 135){
+                        intakeTiltMech.setPower(0.05);
+                        //for stage 3, keep the below value 145
+                    } else if (intakeTiltMech.getCurrentPosition() > 142){
+                        intakeTiltMech.setPower(-0.05);
+                    }else {
+                        intakeTiltMech.setPower(0.0);
+                        ready = true;
+                    }
                     break;
 
                 case 2:
                     intakeTiltMech.setTargetPosition(140);
                     intakeTiltMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    intakeTiltMech.setPower(0.5);
+                    intakeTiltMech.setPower(0.3);
                     break;
 
                 case 1:
-                    intakeTiltMech.setTargetPosition(145);
-                    intakeTiltMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    intakeTiltMech.setPower(0.5);
+                    if (intakeTiltMech.getCurrentPosition() < 140){
+                        intakeTiltMech.setPower(0.05);
+                        //for stage 3, keep the below value 145
+                    } else if (intakeTiltMech.getCurrentPosition() > 152){
+                        intakeTiltMech.setPower(-0.05);
+                    }else {
+                        intakeTiltMech.setPower(0.0);
+                        ready = true;
+                    }
+                    break;
+
+                case 0:
+                    if (intakeTiltMech.getCurrentPosition() < 60){
+                        intakeTiltMech.setPower(0.05);
+                        //for stage 3, keep the below value 145
+                    } else if (intakeTiltMech.getCurrentPosition() > 70){
+                        intakeTiltMech.setPower(-0.05);
+                    }else {
+                        intakeTiltMech.setPower(0.0);
+                        ready = true;
+                    }
                     break;
             }
-            intakeTiltMech.setTargetPosition(116);
-            intakeTiltMech.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-            intakeTiltMech.setPower(1);
         }else{
-            intakeTiltMech.setTargetPosition(0);
-            intakeTiltMech.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-            intakeTiltMech.setPower(1);
+            if (!(intakeTiltMech.getCurrentPosition() < 32)){
+                intakeTiltMech.setPower(-0.05);
+            }else {
+                intakeTiltMech.setPower(0.0);
+                ready = true;
+            }
         }
+        return ready;
     }
 
     public DcMotorEx getIntakeTiltMech(){
         return intakeTiltMech;
     }
 
-    public void moveClaws(String bot_mode, boolean drop_claw_pos, boolean scorp_claw_pos, boolean delta_rot){  //true = open; false = close;
+    public void moveClaws(String bot_mode, boolean drop_claw_pos, boolean scorp_claw_pos, String delta_rot){  //true = open; false = close;
         claw_rot_pos = delta_rot;
 
         try {
-            if(claw_rot_pos){
-                dropClawRotate.setPosition(0.7);
-            }else {
-                dropClawRotate.setPosition(0.05);
+            if(claw_rot_pos.equals("Extend")){
+                dropClawRotate.setPosition(0.9);
+            }else if (claw_rot_pos.equals("Contract")){
+                dropClawRotate.setPosition(0.2);
+            } else if (claw_rot_pos.equals("Midway")){
+                dropClawRotate.setPosition(0.45);
             }
 
             if (drop_claw_pos){
-                dropClaw.getController().pwmEnable();
-                if (bot_mode.equals("Scorpion")){
-                    dropClaw.setPosition(0.4);
-                }else {
-                    dropClaw.setPosition(0.43);
-                }
+                dropClaw.setPosition(0.4);
             }else{
-                dropClaw.getController().pwmDisable();
+                dropClaw.setPosition(0.47);
             }
 
             if (scorp_claw_pos){
-                dropClaw.getController().pwmEnable();
-                dropClaw.setPosition(0.2);
+                intakeClaw.setPosition(0.42);
             }else{
-                dropClaw.getController().pwmDisable();
+                intakeClaw.setPosition(0.55);
             }
         } catch (Exception e) {
             telemetry.addData("moveClaw", "%s", e.toString());
@@ -314,8 +339,7 @@ public class TeamHardware {
     }
 
     public MotorData getMotorData(){
-        MotorData motorData = new MotorData(dropLinearSlide, mfrontright, intakeTiltMech, mbackright, intakeTiltMech, dropLinearSlide, intakeClaw, dropClaw, dropClawRotate);
-        return motorData;
+        return new MotorData(motorLeftFront, motorRightFront, motorLeftBack, motorRightBack, intakeTiltMech, dropLinearSlide, intakeClaw, dropClaw, dropClawRotate);
     }
 
     public void encoderDrive(double speed, DataHolder.MOVEDIR dir, double distance,

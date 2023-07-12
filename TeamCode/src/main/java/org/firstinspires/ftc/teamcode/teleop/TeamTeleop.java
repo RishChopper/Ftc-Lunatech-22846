@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.util.RobotLog;
@@ -33,15 +35,20 @@ public class TeamTeleop extends LinearOpMode {
         double intakeLinearSlideRPM;
         double dropLinearSlideRPM;
 
-        String botmode = "Madman";
+        String botmode = "Auto";
 
         long last_t = System.currentTimeMillis()/1000;
 
         int dropSlideState = 0;
 
+        boolean flip_seq = false;
+
         Servo intakeClaw;
         Servo dropClaw;
         Servo dropClawRotate;
+
+        DcMotorEx intakeSlide;
+        DcMotorEx dropSlide;
 
         TeamHardware robot = new TeamHardware(hardwareMap, telemetry, this);
         MotorData motorData = robot.getMotorData();
@@ -51,6 +58,57 @@ public class TeamTeleop extends LinearOpMode {
         dropClawRotate = hardwareMap.get(Servo.class, "dropClawRotate");
 
         robot.init_teleop();
+
+        intakeSlide = robot.getIntakeTiltMech();
+        intakeSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        dropSlide = robot.getDropLinearSlide();
+
+        Thread t1 = new Thread(() -> {
+            robot.moveClaws("Scorpion", false, true, "Extend");
+
+            boolean tilt_motion = robot.autointakeTiltMech(true, 3);
+            while (!tilt_motion) {
+                tilt_motion = robot.autointakeTiltMech(true, 3);
+                telemetry.addData("Seq", "Waiting for motion to complete");
+                telemetry.update();
+            }
+            telemetry.addData("Seq", "Motion finished");
+            telemetry.update();
+
+            //3
+            while (!gamepad2.x) {
+            }
+            robot.moveClaws("Scorpion", true, false, "Contract");
+            TeamTeleop.this.sleep(300);
+
+            tilt_motion = robot.autointakeTiltMech(false, 3);
+            while (!tilt_motion) {
+                tilt_motion = robot.autointakeTiltMech(false, 3);
+                telemetry.addData("Seq", "Waiting for motion to complete");
+                telemetry.update();
+            }
+            telemetry.addData("Seq", "Motion finished");
+            telemetry.update();
+
+            robot.moveClaws("Scorpion", false, true, "Contract");
+            TeamTeleop.this.sleep(200);
+
+            while (!gamepad2.dpad_left) {
+            }
+
+            tilt_motion = robot.autointakeTiltMech(true, 0);
+            TeamTeleop.this.sleep(200);
+            while (!tilt_motion) {
+                tilt_motion = robot.autointakeTiltMech(true, 0);
+                robot.moveClaws("Scorpion", false, true, "Midway");
+                telemetry.addData("Seq", "Waiting for motion to complete");
+                telemetry.update();
+            }
+            telemetry.addData("Seq", "Motion finished");
+            telemetry.update();
+        });
 
         waitForStart();
         if (opModeIsActive()) {
@@ -68,19 +126,13 @@ public class TeamTeleop extends LinearOpMode {
                     triggers_value = rightTrigger + leftTrigger;
 
                     if (rightX2 >= 0.4){
-                        botmode = "Madman";
+                        botmode = "Manual";
                     }else if(rightX2 <= -0.4){
-                        botmode = "Scorpion";
+                        botmode = "Auto";
                     }
                     telemetry.addData("Botmode: ", botmode);
-
                     if(gamepad2.a) {
-                        if (botmode.equals("Madman")){
-                            dropClaw.setPosition(0.4);//Madman drop_claw measurement
-                        }else if(botmode.equals("Scorpion")){
-                            dropClaw.setPosition(0.43);
-                            gamepad2.rumble(200);
-                        }
+                        dropClaw.setPosition(0.4);
                     }else if (gamepad2.b){
                         dropClaw.setPosition(0.47);
                     }
@@ -92,12 +144,14 @@ public class TeamTeleop extends LinearOpMode {
                     if(gamepad2.dpad_down) {
                         dropClawRotate.setPosition(0.9);//Madman drop_claw measurement
                     }if (gamepad2.dpad_up){
-                        dropClawRotate.setPosition(0.2);
+                        dropClawRotate.setPosition(0.35);
                     }
 
                     robot.setMotors(leftX1, leftY1, rightX1);
-
-                    robot.manualLinearSlides(triggers_value, leftY2/10);
+                    /*robot.setIndiPower(0, leftX1);
+                    robot.setIndiPower(1, leftY1);
+                    robot.setIndiPower(2, rightX1);
+                    robot.setIndiPower(3, rightY1);*/
 
                     if (System.currentTimeMillis() - last_t >= 500) {
                         if(gamepad2.left_bumper){
@@ -114,8 +168,28 @@ public class TeamTeleop extends LinearOpMode {
                     }else if(dropSlideState >= 3){
                         dropSlideState = 3;
                     }
-
                     telemetry.addData("Auto Drop Slide State", dropSlideState);
+
+                    if (botmode.equals("Manual")){
+                        dropSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                        robot.manualLinearSlides(triggers_value, leftY2/10);
+                    } else if(botmode.equals("Auto")){
+                        robot.autoDropLinearSlides(dropSlideState);
+
+                        if (gamepad2.dpad_right){
+                            dropSlide.setPower(0);
+                            dropSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                            dropSlide.setTargetPosition(0);
+                            dropSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                            dropSlide.setPower(1.0);
+                        }
+
+                        if (!flip_seq && gamepad2.dpad_left){
+                            t1.start();
+                            flip_seq = true;
+                        }
+                    }
+
                     intakeLinearSlideRPM = (motorData.getintakeLinearSlide().getVelocity() / 288) * 60;
                     dropLinearSlideRPM = (motorData.getdropLinearSlide().getVelocity() / 537.6) * 60;
                     //Calculate RPM of Motors
@@ -136,6 +210,10 @@ public class TeamTeleop extends LinearOpMode {
                     telemetry.addData("TELEOP 1:", "%s", e.toString());
                     telemetry.update();
                     RobotLog.ee("Lunatech", e, "TELEOP 1");
+                }
+                if (isStopRequested()){
+                    t1.interrupt();
+                    flip_seq = false;
                 }
                 idle();
             }
