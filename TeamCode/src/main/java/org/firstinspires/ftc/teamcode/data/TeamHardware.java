@@ -146,7 +146,7 @@ public class TeamHardware {
 
     public void init_auto(LinearOpMode opmode) {
         myOpMode = opmode;
-        motorLeftFront.setDirection(DcMotorEx.Direction.REVERSE);
+        /*motorLeftFront.setDirection(DcMotorEx.Direction.REVERSE);
         motorLeftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorLeftFront.setPower(0.0);
         motorLeftFront.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -168,7 +168,7 @@ public class TeamHardware {
         motorLeftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorRightBack.setPower(0.0);
         motorRightBack.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        motorRightBack.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        motorRightBack.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);*/
 
         intakeTiltMech.setDirection(DcMotorEx.Direction.FORWARD);
         intakeTiltMech.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -216,10 +216,15 @@ public class TeamHardware {
                 break;
 
             case 3:
-                dropLinearSlide.setTargetPosition(2080);
+                dropLinearSlide.setTargetPosition(1990);
                 dropLinearSlide.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 dropLinearSlide.setPower(1);
                 break;
+
+            case 4:
+                dropLinearSlide.setTargetPosition(1800);
+                dropLinearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                dropLinearSlide.setPower(1);
         }
     }
 
@@ -260,10 +265,10 @@ public class TeamHardware {
 
                 case 0:
                     if (intakeTiltMech.getCurrentPosition() < 60){
-                        intakeTiltMech.setPower(0.05);
+                        intakeTiltMech.setPower(0.06);
                         //for stage 3, keep the below value 145
                     } else if (intakeTiltMech.getCurrentPosition() > 70){
-                        intakeTiltMech.setPower(-0.05);
+                        intakeTiltMech.setPower(-0.06);
                     }else {
                         intakeTiltMech.setPower(0.0);
                         ready = true;

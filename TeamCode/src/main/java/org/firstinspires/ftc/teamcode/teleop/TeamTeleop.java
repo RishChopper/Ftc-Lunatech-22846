@@ -95,14 +95,14 @@ public class TeamTeleop extends LinearOpMode {
             robot.moveClaws("Scorpion", false, true, "Contract");
             TeamTeleop.this.sleep(200);
 
-            while (!gamepad2.dpad_left) {
-            }
+            //while (!gamepad2.dpad_left) {
+            //}
 
             tilt_motion = robot.autointakeTiltMech(true, 0);
             TeamTeleop.this.sleep(200);
             while (!tilt_motion) {
                 tilt_motion = robot.autointakeTiltMech(true, 0);
-                robot.moveClaws("Scorpion", false, true, "Midway");
+                robot.moveClaws("Scorpion", false, true, "Extend");
                 telemetry.addData("Seq", "Waiting for motion to complete");
                 telemetry.update();
             }
@@ -144,7 +144,7 @@ public class TeamTeleop extends LinearOpMode {
                     if(gamepad2.dpad_down) {
                         dropClawRotate.setPosition(0.9);//Madman drop_claw measurement
                     }if (gamepad2.dpad_up){
-                        dropClawRotate.setPosition(0.35);
+                        dropClawRotate.setPosition(0.2);
                     }
 
                     robot.setMotors(leftX1, leftY1, rightX1);
@@ -187,6 +187,10 @@ public class TeamTeleop extends LinearOpMode {
                         if (!flip_seq && gamepad2.dpad_left){
                             t1.start();
                             flip_seq = true;
+                        }
+
+                        if (!t1.isAlive()){
+                            flip_seq = false;
                         }
                     }
 
