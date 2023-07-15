@@ -134,7 +134,7 @@ public class TeamTeleop extends LinearOpMode {
                     if(gamepad2.a) {
                         dropClaw.setPosition(0.4);
                     }else if (gamepad2.b){
-                        dropClaw.setPosition(0.47);
+                        dropClaw.setPosition(0.5);
                     }
                     if (gamepad2.x){
                         intakeClaw.setPosition(0.52);
@@ -170,19 +170,11 @@ public class TeamTeleop extends LinearOpMode {
                     }
                     telemetry.addData("Auto Drop Slide State", dropSlideState);
 
-                    if (botmode.equals("Manual")){
-                        dropSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                        robot.manualLinearSlides(triggers_value, leftY2/10);
-                    } else if(botmode.equals("Auto")){
-                        robot.autoDropLinearSlides(dropSlideState);
+                    dropSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    robot.manualLinearSlides(triggers_value, leftY2/10);
 
-                        if (gamepad2.dpad_right){
-                            dropSlide.setPower(0);
-                            dropSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                            dropSlide.setTargetPosition(0);
-                            dropSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                            dropSlide.setPower(1.0);
-                        }
+                    if(botmode.equals("Auto")){
+                        //robot.autoDropLinearSlides(dropSlideState);
 
                         if (!flip_seq && gamepad2.dpad_left){
                             t1.start();

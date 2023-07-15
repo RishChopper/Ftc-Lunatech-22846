@@ -66,8 +66,6 @@ public class TeamHardware {
         motorRightFront = hardwareMap.get(DcMotorEx.class, "motorRightFront");
         motorLeftBack = hardwareMap.get(DcMotorEx.class, "motorLeftBack");
         motorRightBack = hardwareMap.get(DcMotorEx.class, "motorRightBack");
-        mfrontright = hardwareMap.get(DcMotorEx.class, "mfrontright");
-        mbackright = hardwareMap.get(DcMotorEx.class, "mbackright");
         intakeTiltMech = hardwareMap.get(DcMotorEx.class, "intakeSlide");
         dropLinearSlide = hardwareMap.get(DcMotorEx.class, "dropSlide");
         intakeClaw = hardwareMap.get(Servo.class, "intakeClaw");
@@ -184,8 +182,8 @@ public class TeamHardware {
     }
 
     public void manualLinearSlides(double madman_power, double scorpion_power){
-        if(madman_power <=0.2 && madman_power >= -0.2){
-            //madman_power = 0.01;
+        if(madman_power < 0){
+            madman_power /= 1.5;
         }
         dropLinearSlide.setPower(madman_power);
         intakeTiltMech.setPower(scorpion_power);

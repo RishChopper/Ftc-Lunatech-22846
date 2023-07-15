@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.autonomous.SignalSleeveDetectorMain;
 import org.firstinspires.ftc.teamcode.data.TeamHardware;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous(name = "Lunatech-ODO-AUTO", group = "MainCode")
 public class test extends LinearOpMode {
@@ -40,16 +41,22 @@ public class test extends LinearOpMode {
         Pose2d startPose = new Pose2d(-63, 40, Math.toRadians(90));
         drive.trajectoryBuilder(startPose, false);
 
-        Trajectory init_to_junction = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(54, -5), 0)
+        Trajectory init_mov = drive.trajectoryBuilder(new Pose2d())
+                .strafeRight(8)
+                .build();
+
+        Trajectory init_to_junction = drive.trajectoryBuilder(init_mov.end())
+                .splineTo(new Vector2d(49, -6), 0)
                 //.splineTo(new Vector2d(52, -16.2), 0)
                 .build();
 
         Trajectory junc = drive.trajectoryBuilder(init_to_junction.end())
-                        .strafeRight(13.5)
+                        .strafeRight(11.5)
                                 .build();
 
         robot.autoDropLinearSlides(3);
+        robot.moveClaws("Scorpion", false, false, "Extend");
+        drive.followTrajectory(init_mov);
         drive.followTrajectory(init_to_junction);
         drive.followTrajectory(junc);
 
@@ -65,26 +72,26 @@ public class test extends LinearOpMode {
 
         sleep (500);
 
+        TrajectorySequence junc_to_stack = drive.trajectorySequenceBuilder(junc.end())
+                .lineToLinearHeading(new Pose2d(50, 16, Math.toRadians(180)))
+                .build();
+
         Trajectory myTrajectory = null;
-        switch (signal_sleeve) {
-            case 1:
-                myTrajectory = drive.trajectoryBuilder(junc.end())
-                        .strafeLeft(55)
-                        .build();
-                break;
-
-            case 2:
-                myTrajectory = drive.trajectoryBuilder(junc.end())
-                        .strafeLeft(15)
-                        .build();
-
-            case 3:
-                myTrajectory = drive.trajectoryBuilder(junc.end())
-                        .strafeRight(15)
-                        .build();
-                break;
+        if (signal_sleeve == 1){
+            myTrajectory = drive.trajectoryBuilder(junc.end())
+                    .strafeLeft(38)
+                    .build();
+        } else if (signal_sleeve == 2){
+            myTrajectory = drive.trajectoryBuilder(junc.end())
+                    .strafeLeft(14)
+                    .build();
+        } else if (signal_sleeve == 3) {
+            myTrajectory = drive.trajectoryBuilder(junc.end())
+                    .strafeRight(13)
+                    .build();
         }
 
+        //drive.followTrajectorySequence(junc_to_stack);
         drive.followTrajectory(myTrajectory);
     }
 }
